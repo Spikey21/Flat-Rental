@@ -11,22 +11,23 @@ class FlatLocation(models.Model):
     province = models.CharField(choices=Province.choices(), max_length=20)
     county = models.CharField(choices=County.choices(), max_length=20)
     city = models.CharField(choices=City.choices(), max_length=20)
-    district = models.CharField(max_length=100, blank=True)
-    street = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return f'{self.city}, {self.province}'
 
 
 class Equip(models.Model):
-    name = models.CharField(choices=Equipment.choices(), max_length=10, blank=True)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Flat(models.Model):
     title = models.CharField(max_length=120)
     price = models.PositiveIntegerField()
     area = models.FloatField(validators=[MinValueValidator(0.0)])
-    rooms = models.IntegerField(choices=Rooms.choices())
+    rooms = models.CharField(max_length=10, choices=Rooms.choices())
     created_at = models.DateTimeField(auto_now_add=True)
     development_type = models.CharField(max_length=10, choices=Development.choices())
     floor = models.CharField(max_length=10, choices=Floor.choices())
@@ -35,6 +36,8 @@ class Flat(models.Model):
     text = models.TextField()
     equipment = models.ManyToManyField(Equip, related_name='flat')
     location = models.ForeignKey(FlatLocation, related_name='flat', on_delete=models.CASCADE)
+    district = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True)
     user = models.ForeignKey(User, related_name='flat', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=Status.choices(), default=Status.Active)
 
@@ -52,7 +55,7 @@ class Flat(models.Model):
 
 
 def get_image_filename(instance, filename):
-    title = instance.post.title
+    title = instance.flat.title
     slug = slugify(title)
     return "images/%s-%s" % (slug, filename)
 

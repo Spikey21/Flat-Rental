@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Flat, FlatImage
+from .models import Flat, FlatImage, Equip, FlatLocation
 
 
 class FlatAdmin(admin.ModelAdmin):
@@ -15,5 +15,19 @@ class FlatImageAdmin(admin.ModelAdmin):
     search_fields = ('flat',)
 
 
+class FlatLocationAdmin(admin.ModelAdmin):
+    list_display = ('province', 'city')
+    list_filter = ('province', 'city')
+    search_fields = ['province', 'city']
+
+
+class EquipAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    list_filter = ('name',)
+    search_fields = ('name',)
+
+
 admin.site.register(Flat, FlatAdmin)
 admin.site.register(FlatImage, FlatImageAdmin)
+admin.site.register(Equip, EquipAdmin)
+admin.site.register(FlatLocation, FlatLocationAdmin)
