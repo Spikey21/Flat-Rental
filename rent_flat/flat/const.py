@@ -82,7 +82,19 @@ class Equipment(Enum):
 
 
 class Province(Enum):
+    LowSilesia = 'Lower Silesia'
+    Kuyavia = 'Kuyavia-Pomerania'
     Silesia = 'Silesia'
+    Lodzkie = 'Lodzkie'
+    Lublin = 'Lublin'
+    Lubusz = 'Lubusz'
+    LessPoland = 'Lesser Poland'
+    Masovia = 'Masovia'
+    Subcarpathia = 'Subcarpathia'
+    Pomerania = 'Pomerania'
+    WarmMasuria = 'Warmia-Masuria'
+    GreatPoland = 'Greater Poland'
+    WestPomerania = 'West Pomerania'
 
     @classmethod
     def choices(cls):
@@ -90,15 +102,96 @@ class Province(Enum):
 
 
 class County(Enum):
+    Warsaw = 'Warsaw'
     Wroclaw = 'Wroclaw'
+    Cracow = 'Cracow'
+    Gdansk = 'Gdansk'
+    Poznan = 'Poznan'
+    Szczecin = 'Szczecin'
+    Gdynia = 'Gdynia'
+    Czestochowa = 'Czestochowa'
+    Opole = 'Opole'
+    Lodz = 'Lodz'
+    Bialystok = 'Bialystok'
+    Katowice = 'Katowice'
+    Tarnov = 'Tarnov'
+    Krosno = 'Krosno'
+    Rzeszow = 'Rzeszow'
+    Glwice = 'Gliwice'
+    Radom = 'Radom'
+    ZielonGora = 'Zielona Gora'
+    Lublin = 'Lublin'
+    Swinoujscie = 'Swinoujscie'
+    Bydgoszcz = 'Bydgoszcz'
+    JeleniaGora = 'Jelenia Gora'
+    Legnica = 'Legnica'
+    Grudziadz = 'Grudziadz'
+    Torun = 'Torun'
+    Plock = 'Plock'
+    Chorzow = 'Chorzów'
+    Tychy = 'Tychy'
+    Bytom = 'Bytom'
+    Sosnowiec = 'Sosnowiec'
+    Zabrze = 'Zabrze'
+    Kielce = 'Kielce'
+    Olsztyn = 'Olsztyn'
+    Leszno = 'Leszno'
+    Kalisz = 'Kalisz'
+    Koszalin = 'Koszalin'
+
+    @classmethod
+    def choices(cls):
+            return [(item.name, item.value) for item in cls]
+
+
+class City(Enum):
+    Warsaw = 'Warsaw'
+    Wroclaw = 'Wroclaw'
+    Cracow = 'Cracow'
+    Gdansk = 'Gdansk'
+    Poznan = 'Poznan'
+    Szczecin = 'Szczecin'
+    Gdynia = 'Gdynia'
+    Czestochowa = 'Czestochowa'
+    Opole = 'Opole'
+    Lodz = 'Lodz'
+    Bialystok = 'Bialystok'
+    Katowice = 'Katowice'
+    Tarnov = 'Tarnov'
+    Krosno = 'Krosno'
+    Rzeszow = 'Rzeszow'
+    Glwice = 'Gliwice'
+    Radom = 'Radom'
+    ZielonGora = 'Zielona Gora'
+    Lublin = 'Lublin'
+    Swinoujscie = 'Swinoujscie'
+    Bydgoszcz = 'Bydgoszcz'
+    JeleniaGora = 'Jelenia Gora'
+    Legnica = 'Legnica'
+    Grudziadz = 'Grudziadz'
+    Torun = 'Torun'
+    Plock = 'Plock'
+    Chorzow = 'Chorzów'
+    Tychy = 'Tychy'
+    Bytom = 'Bytom'
+    Sosnowiec = 'Sosnowiec'
+    Zabrze = 'Zabrze'
+    Kielce = 'Kielce'
+    Olsztyn = 'Olsztyn'
+    Leszno = 'Leszno'
+    Kalisz = 'Kalisz'
+    Koszalin = 'Koszalin'
+
 
     @classmethod
     def choices(cls):
         return [(item.name, item.value) for item in cls]
 
 
-class City(Enum):
-    Wroclaw = 'Wroclaw'
+class Status(Enum):
+    Active = 'Active'
+    Archive = 'Archive'
+
 
     @classmethod
     def choices(cls):
