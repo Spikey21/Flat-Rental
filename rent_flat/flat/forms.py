@@ -10,16 +10,10 @@ class FlatForm(forms.ModelForm):
         exclude = ('created_at', 'user', 'status')
 
 
-class EquipForm(forms.ModelForm):
-    class Meta:
-        model = Equip
-        fields = ('name',)
-
-
 class LocationForm(forms.ModelForm):
     class Meta:
         model = FlatLocation
-        fields = ('province', 'county', 'city')
+        fields = ('city', 'district', 'street')
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -38,3 +32,5 @@ class FlatImageForm(forms.ModelForm):
 
 
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=9)
+LocationInlineFormSet = inlineformset_factory(Flat, FlatLocation, form=LocationForm)
+

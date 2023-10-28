@@ -7,17 +7,8 @@ from django.template.defaultfilters import slugify
 from .const import Rooms, Development, Floor, Heat, Equipment, Province, County, City, Status
 
 
-class FlatLocation(models.Model):
-    province = models.CharField(choices=Province.choices(), max_length=20)
-    county = models.CharField(choices=County.choices(), max_length=20)
-    city = models.CharField(choices=City.choices(), max_length=20)
-
-    def __str__(self):
-        return f'{self.city}, {self.province}'
-
-
 class Equip(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(choices=Equipment.choices(), max_length=30)
 
     def __str__(self):
         return f'{self.name}'
@@ -35,9 +26,6 @@ class Flat(models.Model):
     year = models.PositiveIntegerField()
     text = models.TextField()
     equipment = models.ManyToManyField(Equip, related_name='flat')
-    location = models.ForeignKey(FlatLocation, related_name='flat', on_delete=models.CASCADE)
-    district = models.CharField(max_length=100, blank=True)
-    street = models.CharField(max_length=100, blank=True)
     user = models.ForeignKey(User, related_name='flat', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=Status.choices(), default=Status.Active)
 
@@ -63,3 +51,22 @@ def get_image_filename(instance, filename):
 class FlatImage(models.Model):
     flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=get_image_filename, blank=True, verbose_name='Image')
+
+
+class LocationCity(models.Model):
+    province = models.CharField(choices=Province.choices(), max_length=20)
+    county = models.CharField(choices=County.choices(), max_length=20)
+    city = models.CharField(choices=City.choices(), max_length=20)
+
+    def __str__(self):
+        return f'{self.city}, {self.province}'
+
+
+class FlatLocation(models.Model):
+    city = models.ForeignKey(LocationCity, related_name='location', on_delete=models.CASCADE)
+    district = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True)
+    flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='location')
+
+    def __str__(self):
+        return f'{self.city}'
