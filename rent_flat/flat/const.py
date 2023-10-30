@@ -188,6 +188,22 @@ class City(Enum):
         return [(item.name, item.value) for item in cls]
 
 
+class District(Enum):
+    Fabryczna = 'Fabryczna'
+    Krzyki = 'Krzyki'
+    PsiePole = 'Psie Pole'
+    Srodmiescie = 'Srodmiescie'
+    Jagodno = 'Jagodno'
+    Nadodrze = 'Nadodrze'
+    Rynek = 'Rynek'
+    StareMiasto = 'Stare Miasto'
+
+
+    @classmethod
+    def choices(cls):
+        return [(item.name, item.value) for item in cls]
+
+
 class Status(Enum):
     Active = 'Active'
     Archive = 'Archive'

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Create flat{% endblock %}
+
+{% block content %}
+
+<div class="container p-3">
+        <h1 class="text-center">
+            <p class="text-uppercase font-weight-bold font-italic">Add flat to rent</p>
+        </h1>
+        <form action="{% url 'create' %}" method="post">
+            <div class="form-group row m-2">
+                <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputTitle" placeholder="Title" name="title" required>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputPrice" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="inputPrice" name="price" required>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputArea" class="col-sm-2 col-form-label">Area</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="inputArea" name="area" required>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputRoom" class="col-sm-2 col-form-label">Rooms</label>
+                <div class="col-sm-10">
+                    <select id="inputRoom" class="form-control" name="rooms" required>
+                        {% for value,text in form.rooms.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputDevelopment_type" class="col-sm-2 col-form-label">Development Type</label>
+                <div class="col-sm-10">
+                    <select id="inputDevelopment_type" class="form-control" name="development_type" required>
+                        {% for value,text in form.development_type.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputFloor" class="col-sm-2 col-form-label">Floors</label>
+                <div class="col-sm-10">
+                    <select id="inputFloor" class="form-control" name="floor" required>
+                        {% for value,text in form.floor.field.choices  %}
+                        <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputHeating" class="col-sm-2 col-form-label">Heating</label>
+                <div class="col-sm-10">
+                    <select id="inputHeating" class="form-control" name="heating" required>
+                        {% for value,text in form.heating.field.choices  %}
+                        <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row m-2">
+                <label for="inputYear" class="col-sm-2 col-form-label">Year</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="inputYear" name="year" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEquipment">Equipment</label>
+                <select multiple class="form-control" id="inputEquipment" name="equipment">
+                    {% for value,text in form.equipment.field.choices  %}
+                        <option value="{{ value }}">{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group m-4">
+                <label for="textarea">Text</label>
+                <textarea class="form-control" id="textarea" rows="8" name="text" placeholder="Describe your flat" required></textarea>
+            </div>
+            <fieldset>
+                <legend>Add image</legend>
+                {{ image_form.management_form }}
+                {{ image_form.non_form_errors }}
+                {% for form in image_form %}
+                {{ form.id }}
+                    <div class="inline {{ image_form.prefix }}">
+                        {{ form.image.errors }}
+                        {{ form.image.label_tag }}
+                        <div class="form-group m-4">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="image">
+                                <label class="custom-file-label" for="validatedCustomFile">Attach file...</label>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <fieldset>
+                <legend>Add location</legend>
+                {{ location_form.management_form }}
+                {{ location_form.non_form_errors }}
+                {% for form in location_form %}
+                {{ form.id }}
+                <div class="inline {{ image_form.prefix }}">
+                    {{ form.city.errors }}
+                    {{ form.city.label_tag }}
+                    {{ form.city }}
+                    {{ form.district.city.errors }}
+                    {{ form.district.city.label_tag }}
+                    <select id="inputDistrict" name="district" required>
+                        {% for value,text in form.district.field.choices  %}
+                        <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ form.street.errors }}
+                    {{ form.street.label_tag }}
+                    {{ form.street }}
+                </div>
+                {% endfor %}
+            </fieldset>
+            {% csrf_token %}
+            <div class="form-group row m-2">
+                <div class="col-sm-12 text-right">
+                    <button type="submit" class="btn btn-success">Add flat</button>
+                </div>
+            </div>
+        </form>
+</div>
+
+<div class="fixed-bottom d-flex p-3">
+    <div class="form-group">
+        <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+{% endblock %}

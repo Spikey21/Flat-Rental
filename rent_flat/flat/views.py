@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet
@@ -18,7 +19,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     template_name = 'create.html'
     model = Flat
     form_class = FlatForm
-    success_url = 'home'
+    success_url = reverse_lazy("home")
 
     def get(self, request, *args, **kwargs):
         """
@@ -55,6 +56,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
         associated Ingredients and Instructions and then redirects to a
         success page.
         """
+        form.instance.user = self.request.user
         self.object = form.save()
         image_form.instance = self.object
         image_form.save()
