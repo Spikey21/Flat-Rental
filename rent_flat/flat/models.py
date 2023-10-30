@@ -77,7 +77,7 @@ class FlatLocation(models.Model):
                                  show_all=False,
                                  auto_choose=True,
                                  sort=True)
-    street = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True, null=True)
     flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='location')
 
     def __str__(self):

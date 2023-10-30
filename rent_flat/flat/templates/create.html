@@ -3,6 +3,8 @@
 {% block title %}Create flat{% endblock %}
 
 {% block content %}
+{% block headjavascript %}{{ form.media.js }}{% endblock %}
+{% load widget_tweaks %}
 
 <div class="container p-3">
         <h1 class="text-center">
@@ -24,7 +26,7 @@
             <div class="form-group row m-2">
                 <label for="inputArea" class="col-sm-2 col-form-label">Area</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="inputArea" name="area" required>
+                    <input type="number" step="0.01"  class="form-control" id="inputArea" name="area" required>
                 </div>
             </div>
             <div class="form-group row m-2">
@@ -73,71 +75,67 @@
                     <input type="number" class="form-control" id="inputYear" name="year" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputEquipment">Equipment</label>
-                <select multiple class="form-control" id="inputEquipment" name="equipment">
-                    {% for value,text in form.equipment.field.choices  %}
-                        <option value="{{ value }}">{{ text }}</option>
-                    {% endfor %}
-                </select>
+            <div class="form-group m-4">
+                <label for="inputEquipment" class="col-form-label">Equipment</label>
+                    <select multiple class="form-control" id="inputEquipment" name="equipment">
+                        {% for value,text in form.equipment.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                        {% endfor %}
+                    </select>
             </div>
             <div class="form-group m-4">
                 <label for="textarea">Text</label>
                 <textarea class="form-control" id="textarea" rows="8" name="text" placeholder="Describe your flat" required></textarea>
             </div>
-            <fieldset>
-                <legend>Add image</legend>
-                {{ image_form.management_form }}
-                {{ image_form.non_form_errors }}
-                {% for form in image_form %}
-                {{ form.id }}
-                    <div class="inline {{ image_form.prefix }}">
-                        {{ form.image.errors }}
-                        {{ form.image.label_tag }}
-                        <div class="form-group m-4">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="image">
-                                <label class="custom-file-label" for="validatedCustomFile">Attach file...</label>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </fieldset>
-            <fieldset>
+            <div class="form-group m-4">
+                {{ location_items.media.js }}
                 <legend>Add location</legend>
-                {{ location_form.management_form }}
-                {{ location_form.non_form_errors }}
-                {% for form in location_form %}
-                {{ form.id }}
-                <div class="inline {{ image_form.prefix }}">
-                    {{ form.city.errors }}
-                    {{ form.city.label_tag }}
-                    {{ form.city }}
-                    {{ form.district.city.errors }}
-                    {{ form.district.city.label_tag }}
-                    <select id="inputDistrict" name="district" required>
-                        {% for value,text in form.district.field.choices  %}
-                        <option value="{{ value }}">{{ text }}</option>
-                        {% endfor %}
-                    </select>
-                    {{ form.street.errors }}
-                    {{ form.street.label_tag }}
-                    {{ form.street }}
+                {{ location_items.management_form }}
+                {{ location_items.non_form_errors }}
+                {% for form in location_items %}
+                <div class="form-group row items-group">
+                    <div class="col">
+                        {{ form.city.label_tag }}
+                        {{ form.city}}
+                    </div>
+                    <div class="col">
+                        {{ form.district.label_tag }}
+                        {{ form.district}}
+                    </div>
+                    <div class="col">
+                        {{ form.street.label_tag }}
+                        {{ form.street}}
+                    </div>
                 </div>
                 {% endfor %}
-            </fieldset>
-            {% csrf_token %}
+            </div>
+            <div class="form-group m-4">
+                <legend>Add image</legend>
+                {{ image_items.management_form }}
+                {{ image_items.non_form_errors }}
+                <div class="form-group row items-group">
+                    {% for form in image_items %}
+                        <div class="col-sm-3 ">
+                            {{ form.image.errors }}
+                            {{ form.image}}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="form-group row m-2">
                 <div class="col-sm-12 text-right">
                     <button type="submit" class="btn btn-success">Add flat</button>
                 </div>
             </div>
+            {% csrf_token %}
         </form>
 </div>
 
-<div class="fixed-bottom d-flex p-3">
+<div class="container-fluid p-3">
     <div class="form-group">
-        <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-secondary">Back</a>
+        <div class="col-sm-2">
+            <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-secondary">Back</a>
+        </div>
     </div>
 </div>
 
