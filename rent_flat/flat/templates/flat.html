@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Reports
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <form method="GET" action="{% url 'flats' %}">
+        <div class="form-group row my-3">
+            <div class="col-sm-11 mr-sm-2">
+                <input class="form-control" type="search" placeholder="Search" name="search">
+            </div>
+            <button class="btn btn-outline-secondary" type="submit" value="Search">Search</button>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 my-4">
+            <div class="p-3 my-4 mb-2 bg-white text-dark rounded border border-dark">
+                <h1 class="text-center">
+                    <p class="text-uppercase font-weight-bold font-italic">Filter</p>
+                </h1>
+                <hr class="my-4">
+                <form method="get">
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputPrice">Price min</label>
+                        <input type="number"  id="inputPrice" class="form-control my-2" name="price_min">
+                        <label class="my-2" for="inputPrice2">Price max</label>
+                        <input type="number" id="inputPrice2" class="form-control my-2" name="price_max">
+                    </div>
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputArea">Area min</label>
+                        <input type="number" id="inputArea" class="form-control my-2" name="area_min">
+                        <label class="my-2" for="inputArea2">Area max</label>
+                        <input type="number" id="inputArea2" class="form-control my-2" name="area_max">
+                    </div>
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputRooms">Rooms</label>
+                        <select multiple class="form-control" id="inputRooms" name="rooms">
+                            {% for value,text in filter.form.rooms.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputYear">Year min</label>
+                        <input type="number" id="inputYear" class="form-control my-2" name="year_min">
+                        <label class="my-2" for="inputYear2">Year max</label>
+                        <input type="number" id="inputYear2" class="form-control my-2" name="year_max">
+                    </div>
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputDevelopment">Development type</label>
+                        <select id="inputDevelopment" class="form-control my-2" name="development_type">
+                            {% for value,text in filter.form.development_type.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group my-4 mr-sm-2">
+                        <label class="my-2" for="inputEquipment">Rooms</label>
+                        <select multiple class="form-control" id="inputEquipment" name="equipment">
+                            {% for value,text in filter.form.equipment.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% csrf_token %}
+                    <div class="form-group my-4 mr-sm-2">
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-dark">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if flats %}
+        <div class="col-sm-8">
+            <div class="row">
+                {% for flat in flats %}
+                <div class="col-sm-6">
+                    <div class="card my-4 bg-dark text-white">
+                        <h5 class="card-header">{{flat.title}}</h5>
+                        <div class="card-body">
+                            <p class="card-text">Price: {{flat.price}}</p>
+                            <p class="card-text">Area: {{flat.area}}</p>
+                            <p class="card-text">Year: {{flat.year}}</p>
+                        <a href="{% url 'detail' flat.id %}" class="btn btn-primary">Check flat</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <p class="card-text">{{flat.created_at}}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="col-sm-8 align-self-center">
+            <div class="row justify-content-center">
+                <div class="badge badge-danger text-wrap" >
+                    <h1 class="text-uppercase font-weight-bold align-center">0 result found</h1>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+
+<div class="fixed-bottom d-flex p-3 justify-content-center">
+    <nav aria-label="...">
+        {% with request.get_full_path as querystring %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            {% if 'price' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+            {% elif 'search' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+            {% for page in page_obj.paginator.page_range %}
+            {% if 'price' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page }}">{{ page }}</a>
+            </li>
+            {% else %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="{{ querystring }}&page={{ page }}">{{ page }}</a>
+            </li>
+            {% endif %}
+            {% elif 'search' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page }}">{{ page }}</a>
+            </li>
+            {% else %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="{{ querystring }}&page={{ page }}">{{ page }}</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            {% if 'price' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+            {% elif 'search' in querystring %}
+            {% if 'page' in querystring %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring|slice:":-7" }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="{{ querystring }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+        {% endwith %}
+    </nav>
+</div>
+
+{% endblock content %}

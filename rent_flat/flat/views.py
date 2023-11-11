@@ -1,10 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import generic
 from django.views.generic import CreateView
+from django_filters.views import FilterView
 
+from .filter import FlatFilter
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet
 from .models import Flat
 
@@ -12,7 +16,6 @@ User = get_user_model()
 
 
 def home(request):
-
     return render(request, 'home.html', )
 
 
@@ -21,7 +24,6 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     model = Flat
     form_class = FlatForm
     success_url = reverse_lazy("home")
-
 
     def get_context_data(self, **kwargs):
         context = super(FlatCreateView, self).get_context_data(**kwargs)
@@ -45,3 +47,26 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
                 formset_image.instance = self.object
                 formset_image.save()
         return super().form_valid(form)
+
+
+class FlatListView(FilterView):
+    model = Flat
+    template_name = 'flat.html'
+    context_object_name = 'flats'
+    paginate_by = 4
+    filterset_class = FlatFilter
+
+    def get_queryset(self, *args, **kwargs):
+        search = self.request.GET.get('search')
+        queryset = super().get_queryset(**kwargs)
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) |
+                Q(text__icontains=search)
+            )
+        return queryset
+
+
+class FlatDetailView(generic.DetailView):
+    model = Flat
+    template_name = 'detail.html'

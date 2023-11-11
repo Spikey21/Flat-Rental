@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+{{flat.title}}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="p-3 my-3 mb-2 bg-white text-dark rounded border border-dark" style="height: 760px">
+        <div class="row m-2">
+            <h1 class="display-3 text-uppercase font-weight-bold">{{flat.title}}</h1>
+        </div>
+        <div class="row m-4">
+            <div class="col-sm-6">
+                <h1 class="text-start">
+                    <p class="text-uppercase font-weight-bold font-italic">{{flat.price}}</p>
+                </h1>
+                <h3 class="text-start">
+                    <p class="font-weight-bold font-italic">Area - {{flat.area}}</p>
+                </h3>
+                <p class="text-start">Year: {{flat.year}}</p>
+                <p class="text-start">Development type: {{flat.development_type}}</p>
+                <p class="text-start">Floor: {{flat.floor}}</p>
+                <p class="text-start">Heating: {{flat.heating}}</p>
+                <p class="text-start"> Equipments:
+                    {% if flat.equipment %}
+                        {% for equipment in flat.equipment.all   %}
+                        <p class="text-start">{{ equipment }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </p>
+                <hr class="my-2">
+            </div>
+            <div class="col-sm-6">
+                {% if flat.image %}}
+                <img src="{{flat.image.url}}" class="rounded mx-auto d-block"  alt="Report image">
+                {% endif %}
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col-md-10 mx-auto">
+                <p class="font-italic">{{flat.text}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <hr class="my-2">
+        </div>
+        <div class="row m-4">
+            <div class="col-md-12 d-flex justify-content-end">
+                <p class="card-text">Submitted by: {{flat.user}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-bottom p-3">
+    <div class="row">
+        <div class="col-sm-1">
+            <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
