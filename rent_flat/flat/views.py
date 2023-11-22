@@ -16,7 +16,8 @@ User = get_user_model()
 
 
 def home(request):
-    return render(request, 'home.html', )
+    flats = Flat.objects.order_by('-created_at')
+    return render(request, 'home.html', {'flats': flats})
 
 
 class FlatCreateView(LoginRequiredMixin, CreateView):

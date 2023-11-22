@@ -60,14 +60,6 @@ Reports
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group my-4 mr-sm-2">
-                        <label class="my-2" for="inputEquipment">Rooms</label>
-                        <select multiple class="form-control" id="inputEquipment" name="equipment">
-                            {% for value,text in filter.form.equipment.field.choices  %}
-                            <option value="{{ value }}">{{ text }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
                     {% csrf_token %}
                     <div class="form-group my-4 mr-sm-2">
                         <div class="text-right">

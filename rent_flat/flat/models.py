@@ -15,11 +15,18 @@ class Equip(models.Model):
         return f'{self.name}'
 
 
+class Room(models.Model):
+    name = models.CharField(choices=Rooms.choices(), max_length=30)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class Flat(models.Model):
     title = models.CharField(max_length=120)
     price = models.PositiveIntegerField()
     area = models.FloatField(validators=[MinValueValidator(0.0)])
-    rooms = models.CharField(max_length=10, choices=Rooms.choices())
+    rooms = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='flat')
     created_at = models.DateTimeField(auto_now_add=True)
     development_type = models.CharField(max_length=10, choices=Development.choices())
     floor = models.CharField(max_length=10, choices=Floor.choices())

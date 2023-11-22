@@ -1,16 +1,16 @@
 import django_filters
-from django_filters import RangeFilter, MultipleChoiceFilter
+from django import forms
+from django_filters import RangeFilter, MultipleChoiceFilter, ModelMultipleChoiceFilter
 
-from .models import Flat
+from .models import Flat, Room
 
 
 class FlatFilter(django_filters.FilterSet):
     price = RangeFilter()
     area = RangeFilter()
-    rooms = MultipleChoiceFilter()
+    rooms = ModelMultipleChoiceFilter(queryset=Room.objects.all(), widget=forms.CheckboxSelectMultiple())
     year = RangeFilter()
-    equipment = MultipleChoiceFilter()
 
     class Meta:
         model = Flat
-        fields = ['price', 'area', 'rooms', 'development_type', 'year', 'equipment']
+        fields = ['price', 'area', 'rooms', 'development_type', 'year']
