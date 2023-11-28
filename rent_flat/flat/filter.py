@@ -10,6 +10,7 @@ class FlatFilter(django_filters.FilterSet):
     area = RangeFilter()
     rooms = ModelMultipleChoiceFilter(queryset=Room.objects.all(), widget=forms.CheckboxSelectMultiple())
     year = RangeFilter()
+    location = ModelChoiceFilter(queryset=FlatLocation.objects.all(), label='FlatLocation', distinct=True)
 
     class Meta:
         model = Flat
