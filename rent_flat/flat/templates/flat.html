@@ -6,84 +6,95 @@ Reports
 
 {% block content %}
 
-<div class="container">
-    <form method="GET" action="{% url 'flats' %}">
-        <div class="form-group row my-3">
-            <div class="col-sm-11 mr-sm-2">
-                <input class="form-control" type="search" placeholder="Search" name="search">
-            </div>
-            <button class="btn btn-outline-secondary" type="submit" value="Search">Search</button>
-        </div>
-    </form>
-</div>
 
 <div class="container-fluid">
         <div class="col my-4">
             <div class="p-3 my-4 mb-2 bg-white text-dark rounded border border-dark">
                 <h1 class="text-center">
-                    <p class="text-uppercase font-weight-bold font-italic">Filter</p>
+                    <p class="text-uppercase font-weight-bold font-italic">Search flat</p>
                 </h1>
                 <hr class="my-4">
                 <form method="get">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group my-4 mr-sm-2">
-                                <label class="my-2" for="inputPrice">Price min</label>
-                                <input type="number"  id="inputPrice" class="form-control my-2" name="price_min">
-
-                                <label class="my-2" for="inputPrice2">Price max</label>
-                                <input type="number" id="inputPrice2" class="form-control my-2" name="price_max">
+                        <div class="col-sm-4">
+                            <div class="form-group my-2 mr-sm-2">
+                                <label class="my-2" for="inputLocation">Location</label>
+                                <select id="inputLocation" class="form-control" name="location">
+                                    {% for value,text in filter.form.location__city.field.choices  %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-
-                        <div class="col-sm-6">
-
-                            <div class="form-group my-4 mr-sm-2">
-                                <label class="my-2" for="inputArea">Area min</label>
-                                <input type="number" id="inputArea" class="form-control my-2" name="area_min">
-                                <label class="my-2" for="inputArea2">Area max</label>
-                                <input type="number" id="inputArea2" class="form-control my-2" name="area_max">
+                        <div class="col-sm-4">
+                            <div class="form-group my-2 mr-sm-2">
+                                <label class="my-2" for="inputDevelopment">Development type</label>
+                                <select id="inputDevelopment" class="form-control" name="development_type">
+                                    {% for value,text in filter.form.development_type.field.choices  %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                        <div class="form-group-row my-4 mr-sm-2">
-                            <label class="my-2" for="inputRooms">Rooms</label>
-                            <div class="form-check" id="inputRooms">
-                                <div class="row">
-                                {% for value,text in filter.form.rooms.field.choices  %}
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="form-group-row my-2 mr-sm-2">
+                                <label class="my-2" for="inputRooms">Rooms</label>
+                                <div class="form-check" id="inputRooms">
+                                    <div class="form-row m-2">
+                                        {% for value,text in filter.form.rooms.field.choices  %}
+                                        <div class="col-sm-2">
                                             <input class="form-check-input"  type="checkbox" name="{{ value }}" > {{ value }}
                                         </div>
+                                        {% endfor %}
                                     </div>
-                                {% endfor %}
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-sm-6">
-                        <div class="form-group my-4 mr-sm-2">
-                            <label class="my-2" for="inputYear">Year min</label>
-                            <input type="number" id="inputYear" class="form-control my-2" name="year_min">
-                            <label class="my-2" for="inputYear2">Year max</label>
-                            <input type="number" id="inputYear2" class="form-control my-2" name="year_max">
-                        </div>
-                        </div>
-                        <div class="col-sm-6">
-                        <div class="form-group my-4 mr-sm-2">
-                            <label class="my-2" for="inputDevelopment">Development type</label>
-                            <select id="inputDevelopment" class="form-control my-2" name="development_type">
-                                {% for value,text in filter.form.development_type.field.choices  %}
-                                <option value="{{ value }}">{{ text }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        </div>
-                    </div>
                         {% csrf_token %}
-                        <div class="form-group my-4 mr-sm-2">
-                            <div class="text-right">
-                                <button type="submit" class="btn btn-dark">Filter</button>
+                        <div class="col-sm-4">
+                            <div class="form-group my-2 mr-sm-2">
+                                <label class="my-2" for="inputPrice">Price</label>
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <input type="number"  id="inputPrice" class="form-control my-2" name="price_min" placeholder="Price min">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" id="inputPrice2" class="form-control my-2" name="price_max" placeholder="Price max">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group my-2 mr-sm-2">
+                                <label class="my-2" for="inputArea">Area min</label>
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <input type="number" id="inputArea" class="form-control my-2" name="area_min">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" id="inputArea2" class="form-control my-2" name="area_max">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group my-2 mr-sm-2">
+                                <label class="my-2" for="inputYear">Year min</label>
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <input type="number" id="inputYear" class="form-control my-2" name="year_min">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" id="inputYear2" class="form-control my-2" name="year_max">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group my-2 mr-sm-2">
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-dark">Search</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -114,17 +125,16 @@ Reports
         {% else %}
         <div class="col my-4 align-self-center">
             <div class="row justify-content-center">
-                <div class="badge badge-danger text-wrap" >
+                <div class="text-wrap" >
                     <h1 class="text-uppercase font-weight-bold align-center">0 result found</h1>
                 </div>
             </div>
         </div>
         {% endif %}
 </div>
-</div>
 
-
-<div class="fixed-bottom d-flex p-3 justify-content-center">
+{% if flats %}
+<div class="d-flex p-3 justify-content-center">
     <nav aria-label="...">
         {% with request.get_full_path as querystring %}
         <ul class="pagination">
@@ -221,5 +231,7 @@ Reports
         {% endwith %}
     </nav>
 </div>
+{% endif %}
+
 
 {% endblock content %}

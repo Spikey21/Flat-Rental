@@ -54,16 +54,15 @@ class FlatListView(FilterView):
     model = Flat
     template_name = 'flat.html'
     context_object_name = 'flats'
-    paginate_by = 4
+    paginate_by = 10
     filterset_class = FlatFilter
 
     def get_queryset(self, *args, **kwargs):
-        search = self.request.GET.get('search')
+        location = self.request.GET.get('search')
         queryset = super().get_queryset(**kwargs)
-        if search:
+        if location:
             queryset = queryset.filter(
-                Q(title__icontains=search) |
-                Q(text__icontains=search)
+                Q(title__icontains=location)
             )
         return queryset
 

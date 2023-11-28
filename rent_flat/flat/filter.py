@@ -1,8 +1,8 @@
 import django_filters
 from django import forms
-from django_filters import RangeFilter, MultipleChoiceFilter, ModelMultipleChoiceFilter
+from django_filters import RangeFilter, MultipleChoiceFilter, ModelMultipleChoiceFilter, ChoiceFilter, ModelChoiceFilter
 
-from .models import Flat, Room
+from .models import Flat, Room, FlatLocation
 
 
 class FlatFilter(django_filters.FilterSet):
@@ -13,4 +13,4 @@ class FlatFilter(django_filters.FilterSet):
 
     class Meta:
         model = Flat
-        fields = ['price', 'area', 'rooms', 'development_type', 'year']
+        fields = ['price', 'area', 'rooms', 'development_type', 'year', 'location__city']
