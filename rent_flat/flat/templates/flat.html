@@ -7,12 +7,12 @@ Reports
 {% block content %}
 
 
-<div class="container-fluid">
+<div class="container">
         <div class="col my-4">
             <div class="p-3 my-4 mb-2 bg-white text-dark rounded border border-dark">
-                <h1 class="text-center">
+                <h2 class="text-center">
                     <p class="text-uppercase font-weight-bold font-italic">Search flat</p>
-                </h1>
+                </h2>
                 <hr class="my-4">
                 <form method="get">
                     <div class="row">
@@ -53,7 +53,6 @@ Reports
                         {% csrf_token %}
                         <div class="col-sm-4">
                             <div class="form-group my-2 mr-sm-2">
-                                <label class="my-2" for="inputPrice">Price</label>
                                 <div class="form-row">
                                     <div class="col-sm-6">
                                         <input type="number"  id="inputPrice" class="form-control my-2" name="price_min" placeholder="Price min">
@@ -66,7 +65,6 @@ Reports
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group my-2 mr-sm-2">
-                                <label class="my-2" for="inputArea">Area</label>
                                 <div class="form-row">
                                     <div class="col-sm-6">
                                         <input type="number" id="inputArea" class="form-control my-2" name="area_min" placeholder="Area min">
@@ -79,7 +77,6 @@ Reports
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group my-2 mr-sm-2">
-                                <label class="my-2" for="inputYear">Year</label>
                                 <div class="form-row">
                                     <div class="col-sm-6">
                                         <input type="number" id="inputYear" class="form-control my-2" name="year_min" placeholder="Year min">
@@ -90,11 +87,11 @@ Reports
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group my-2 mr-sm-2">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-dark">Search</button>
-                                </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group my-4 mr-sm-2">
+                            <div class="text-right ">
+                                <button type="submit" class="btn btn-dark">Search</button>
                             </div>
                         </div>
                     </div>

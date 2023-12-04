@@ -12,46 +12,54 @@
         </h1>
         <form action="{% url 'create' %}" method="post">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-12">
                     <div class="form-group m-2">
-                        <label for="inputTitle" class="col-form-label">Title</label>
-                        <div class="col-sm-10">
+                        <label for="inputTitle" class="col-sm-6 col-form-label">Title</label>
+                        <div class="col-sm-12">
                             <input type="text" class="form-control" id="inputTitle" placeholder="Title" name="title" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group m-2">
+                        <label for="inputPrice" class="col-sm-6 col-form-label">Price</label>
+                        <div class="col-sm-12">
+                            <input type="number" class="form-control" id="inputPrice" name="price" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group m-2">
+                        <label for="inputArea" class="col-sm-6 col-form-label">Area</label>
+                        <div class="col-sm-12">
+                            <input type="number" step="0.01"  class="form-control" id="inputArea" name="area" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group m-2">
+                        <label for="inputYear" class="col-sm-6 col-form-label">Year</label>
+                        <div class="col-sm-12">
+                            <input type="number" class="form-control" id="inputYear" name="year" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group m-2">
+                        <label for="inputRoom" class="col-sm-6 col-form-label">Rooms</label>
+                        <div class="col-sm-12">
+                            <select id="inputRoom" class="form-control" name="rooms" required>
+                                {% for value,text in form.rooms.field.choices  %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                 <div class="form-group m-2">
-                    <label for="inputPrice" class="col-form-label">Price</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="inputPrice" name="price" required>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputArea" class="ol-form-label">Area</label>
-                    <div class="col-sm-10">
-                        <input type="number" step="0.01"  class="form-control" id="inputArea" name="area" required>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputRoom" class="col-form-label">Rooms</label>
-                    <div class="col-sm-10">
-                        <select id="inputRoom" class="form-control" name="rooms" required>
-                            {% for value,text in form.rooms.field.choices  %}
-                                <option value="{{ value }}">{{ text }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputDevelopment_type" class="col-form-label">Development Type</label>
-                    <div class="col-sm-10">
+                    <label for="inputDevelopment_type" class="col-sm-6 col-form-label">Development Type</label>
+                    <div class="col-sm-12">
                         <select id="inputDevelopment_type" class="form-control" name="development_type" required>
                             {% for value,text in form.development_type.field.choices  %}
                                 <option value="{{ value }}">{{ text }}</option>
@@ -62,8 +70,8 @@
                 </div>
                 <div class="col-sm-4">
                 <div class="form-group m-2">
-                    <label for="inputFloor" class="col-form-label">Floors</label>
-                    <div class="col-sm-10">
+                    <label for="inputFloor" class="col-sm-6 col-form-label">Floors</label>
+                    <div class="col-sm-12">
                         <select id="inputFloor" class="form-control" name="floor" required>
                             {% for value,text in form.floor.field.choices  %}
                             <option value="{{ value }}">{{ text }}</option>
@@ -74,21 +82,13 @@
                 </div>
                 <div class="col-sm-4">
                 <div class="form-group m-2">
-                    <label for="inputHeating" class="col-form-label">Heating</label>
-                    <div class="col-sm-10">
+                    <label for="inputHeating" class="col-sm-6 col-form-label">Heating</label>
+                    <div class="col-sm-12">
                         <select id="inputHeating" class="form-control" name="heating" required>
                             {% for value,text in form.heating.field.choices  %}
                             <option value="{{ value }}">{{ text }}</option>
                             {% endfor %}
                         </select>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputYear" class="col-form-label m-2">Year</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="inputYear" name="year" required>
                     </div>
                 </div>
                 </div>
