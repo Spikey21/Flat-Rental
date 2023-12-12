@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -50,3 +50,13 @@ class PasswordChange(LoginRequiredMixin, SuccessMessageMixin, FormView):
         form.save()
         update_session_auth_hash(self.request, form.user)
         return super(PasswordChange, self).form_valid(form)
+
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'account/reset_password.html'
+    email_template_name = 'account/reset_password_email.html'
+    subject_template_name = 'account/reset_password_subject.txt'
+    success_message = "We've emailed you instructions for resetting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly. " \
+                      "Please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy("home")
