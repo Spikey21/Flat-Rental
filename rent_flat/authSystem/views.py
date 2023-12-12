@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -22,3 +22,8 @@ class SignUp(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy("login")
     template_name = "signup.html"
     success_message = "Your account has been created. You can go ahead and log in now!"
+
+
+class LogOut(SuccessMessageMixin, LogoutView):
+    success_url = reverse_lazy("home")
+    success_message = "Your have been log out of the system."
