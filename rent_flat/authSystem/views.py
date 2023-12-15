@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -60,3 +61,14 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
                       "if an account exists with the email you entered. You should receive them shortly. " \
                       "Please make sure you've entered the address you registered with, and check your spam folder."
     success_url = reverse_lazy("home")
+
+
+class ResetConfirmPasswordView(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = 'account/reset_password_confirm.html'
+    success_url = reverse_lazy("reset_password_complete")
+    success_message = "Password has been changed. You can go ahead and log in now."
+
+
+class ResetCompletePasswordView(SuccessMessageMixin, PasswordResetCompleteView):
+    template_name = 'account/reset_password_complete.html'
+
