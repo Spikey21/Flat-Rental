@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView
 
-from rent_flat.authSystem.forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm
 
 
 class LogIn(SuccessMessageMixin, LoginView):

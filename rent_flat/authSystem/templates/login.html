@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<div class="p-3 container-fluid ">
+  {% for message in messages %}
+  <div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="container">
+  <div class="card card-container">
+    <div class="card body">
+      <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+      <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+      <p id="profile-name" class="profile-name-card"></p>
+      <div class="form-title text-center">
+        <h2 class="fw-bold mb-4">Sign In</h2>
+        {% if form.errors %}
+        <div class="form-group mb-2">
+          {% for field in form %}
+          {% for error in field.errors %}
+          <div class="alert alert-danger" role="alert">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-2">Please enter your username and password!</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card body">
+    <form class="form-signin">
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <div id="remember" class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      {% csrf_token %}
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+    </form><!-- /form -->
+    <a href="{% url 'reset_password' %}" class="text-info">
+      Forgot the password?
+    </a>
+    </div>
+    <div class="card-footer">
+      <div class="form-group">Not a member yet? <a href="{% url 'signup' %}" class="text-info"> Sign Up</a></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content ">
+    <div class="modal-header d-flex justify-content-center">
+      <div class="form-title text-center">
+        <h2 class="fw-bold mb-4">Sign In</h2>
+        {% if form.errors %}
+          <div class="form-group mb-2">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">
+                  <strong>{{ error|escape }}</strong>
+                </div>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                <strong>{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted mb-2">Please enter your username and password!</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex flex-column text-center">
+        <form method="post">
+          <div class="form-group">
+            <input type="text" class="form-control form-control-lg " id="username" placeholder="Username..." name="username" >
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control form-control-lg " id="password" placeholder="Password..." name="password">
+          </div>
+          <div class="form-group">
+            <div class="text-right">
+              <a class="text-info" href="{% url 'reset_password' %}">Forgot your password?</a>
+            </div>
+          </div>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-info btn-block btn-round">Login</button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <div class="form-group">Not a member yet? <a href="{% url 'signup' %}" class="text-info"> Sign Up</a></div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

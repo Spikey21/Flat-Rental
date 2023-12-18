@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import CheckConstraint, Q
@@ -6,6 +6,8 @@ from django.template.defaultfilters import slugify
 from smart_selects.db_fields import ChainedForeignKey
 
 from .const import Rooms, Development, Floor, Heat, Equipment, Province, County, City, Status, District
+
+User = settings.AUTH_USER_MODEL
 
 
 class Equip(models.Model):
