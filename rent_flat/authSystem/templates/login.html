@@ -44,9 +44,9 @@
       </div>
     </div>
     <div class="card body p-3">
-    <form class="form-signin" method="post">
+    <form method="post">
       <div class="form-group m-2">
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
+      <input type="text" id="inputUsername" class="form-control" placeholder="Username" name="username" required autofocus>
       </div>
       <div class="form-group m-2">
       <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
@@ -58,11 +58,9 @@
         </label>
       </div>
       </div>
-      <div class="form-group m-2">
       {% csrf_token %}
       <div class="col-10 mx-auto">
         <button class="btn btn-lg btn-info btn-block btn-round" type="submit">Sign in</button>
-      </div>
       </div>
     </form><!-- /form -->
       <div class="form-group m-2">
@@ -73,7 +71,7 @@
       </div>
     </div>
     <div class="card-footer mx-auto">
-      <div class="form-group">Not a member yet? <a href="{% url 'signup' %}" class="text-info"> Sign Up</a></div>
+      <div class="form-group m-2">Not a member yet? <a href="{% url 'signup' %}" class="text-info"> Sign Up</a></div>
     </div>
   </div>
 </div>

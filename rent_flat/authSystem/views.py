@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, DetailView
 
 from .forms import CustomUserCreationForm
 
@@ -31,7 +31,15 @@ class SignUp(SuccessMessageMixin, CreateView):
 class LogOut(LoginRequiredMixin, SuccessMessageMixin, LogoutView):
     login_url = 'login'
     success_url = reverse_lazy("home")
-    success_message = "Your have been log out of the system."
+    success_message = "Your account has been log out of the system."
+
+
+class UserView(LoginRequiredMixin, DetailView):
+    login_url = 'login'
+    template_name = 'profile.html'
+
+    def get_object(self, **kwargs):
+        return self.request.user
 
 
 class PasswordChange(LoginRequiredMixin, SuccessMessageMixin, FormView):
