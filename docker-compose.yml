@@ -1,7 +1,7 @@
 version: '3.11'
 
 services:
-  app:
+  rent_flat:
     build:
       context: .
     ports:

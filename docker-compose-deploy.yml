@@ -1,0 +1,23 @@
+version: '3.11'
+
+services:
+  rent_flat:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=fsajiisafa1244!3sf
+      - ALLOWED_HOSTS=127.0.0.1, localhost
+
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data/vol/static
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rent_flat
+volumes:
+  static_data:
