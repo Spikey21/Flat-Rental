@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django_filters.views import FilterView
 
 from .filter import FlatFilter
@@ -15,9 +15,11 @@ from .models import Flat
 User = get_user_model()
 
 
-def home(request):
-    flats = Flat.objects.order_by('-created_at')
-    return render(request, 'home.html', {'flats': flats})
+class HomeListView(ListView):
+    model = Flat
+    template_name = 'home.html'
+    context_object_name = 'flats'
+    ordering = ['-created_at']
 
 
 class FlatCreateView(LoginRequiredMixin, CreateView):
