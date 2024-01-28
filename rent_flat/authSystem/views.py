@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
+    PasswordResetCompleteView, PasswordChangeDoneView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -59,6 +59,10 @@ class PasswordChange(LoginRequiredMixin, SuccessMessageMixin, FormView):
         form.save()
         update_session_auth_hash(self.request, form.user)
         return super(PasswordChange, self).form_valid(form)
+
+
+class PasswordChangeDone(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeDoneView):
+    template_name = 'account/change_password_done.html'
 
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
