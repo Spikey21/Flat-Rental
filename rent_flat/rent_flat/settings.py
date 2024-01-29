@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 import dotenv
 
@@ -151,6 +152,25 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 USE_JQUERY_DJANGO = True
+
+# Configure the Message Storage Backend (Optional)
+# By default, Django uses the 'django.contrib.messages.storage.fallback.FallbackStorage' backend,
+# which stores messages in memory and falls back to session-based storage if the user is authenticated.
+# If you want to use a different backend, you can specify it using the MESSAGE_STORAGE setting.
+# For example, to use the cookie-based storage backend, you can use the following:
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+# Set the Message Tags (Optional)
+# You can define your own message tags to customize the appearance and behavior of messages.
+# Here's an example of defining custom tags as constants:
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'success',
+    messages.ERROR: 'danger',
+    messages.WARNING: 'warning',
+    messages.INFO: 'info',
+}
+
+NOTIFICATIONS_NOTIFICATION_MODEL = 'apps.notify.Notification'
 
 # email configs
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
