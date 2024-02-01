@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from notifications.models import Notification
+from .models import Notification
 from django.contrib import messages
 
 @login_required

@@ -37,6 +37,8 @@ if ALLOWED_HOSTS_ENV:
 
 # Application definition
 
+NOTIFICATIONS_NOTIFICATION_MODEL = 'notify.Notification'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -170,7 +172,7 @@ MESSAGE_TAGS = {
     messages.INFO: 'info',
 }
 
-NOTIFICATIONS_NOTIFICATION_MODEL = 'apps.notify.Notification'
+
 
 # email configs
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

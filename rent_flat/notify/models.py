@@ -14,14 +14,12 @@ class NotificationType(models.Model):
 
 
 class Notification(BaseNotification):
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE)
     notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
-    sent_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=200)
-    is_read = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-sent_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.message
