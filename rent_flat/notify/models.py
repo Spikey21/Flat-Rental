@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from notifications.models import Notification as BaseNotification
+from notifications.base.models import AbstractNotification
 
 User = settings.AUTH_USER_MODEL
 
@@ -13,7 +13,7 @@ class NotificationType(models.Model):
         return self.name
 
 
-class Notification(BaseNotification):
+class Notification(AbstractNotification):
     notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=200)
