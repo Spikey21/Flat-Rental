@@ -19,6 +19,7 @@ class Notification(AbstractNotification):
     message = models.CharField(max_length=200)
 
     class Meta:
+        abstract = False
         ordering = ['-created_at']
 
     def __str__(self):

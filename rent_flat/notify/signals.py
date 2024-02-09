@@ -10,4 +10,4 @@ from .models import Notification, NotificationType
 @receiver(post_save, sender=Flat)
 def create_flat(sender, created, instance, update_fields, **kwargs):
     if created:
-        notify.send(Flat, recipient=instance.user, verb=_("You have new flat"))
+        notify.send(instance, recipient=instance.user, verb=_("You have new flat"))
