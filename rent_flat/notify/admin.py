@@ -4,7 +4,7 @@ from .models import Notification, NotificationType
 
 
 class NotificationTypeAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = ("name", "pk")
     list_filter = ("name",)
     search_fields = ("name",)
     ordering = ("name",)
