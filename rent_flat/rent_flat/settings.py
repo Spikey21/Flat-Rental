@@ -38,6 +38,7 @@ if ALLOWED_HOSTS_ENV:
 # Application definition
 
 NOTIFICATIONS_NOTIFICATION_MODEL = 'notify.Notification'
+DJANGO_NOTIFICATIONS_CONFIG = {'USE_JSONFIELD': True}
 
 INSTALLED_APPS = [
     'django.contrib.admin',

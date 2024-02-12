@@ -14,7 +14,7 @@ class NotificationType(models.Model):
 
 
 class Notification(AbstractNotification):
-    notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, null= True)
+    notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=200)
 
@@ -23,4 +23,4 @@ class Notification(AbstractNotification):
         ordering = ['-created_at']
 
     def __str__(self):
-        return self.message
+        return f"{self.message}"
