@@ -22,4 +22,5 @@ urlpatterns = [
     path('authSystem/', include('authSystem.urls')),
     path('', include('flat.urls')),
     path('chaining/', include('smart_selects.urls')),
+    path('', include('notify.urls')),
 ]
