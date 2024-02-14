@@ -10,6 +10,12 @@ class FlatForm(forms.ModelForm):
         exclude = ('created_at', 'user', 'status')
 
 
+class UpdateFlatForm(forms.ModelForm):
+    class Meta:
+        model = Flat
+        exclude = ('created_at', 'user')
+
+
 class LocationForm(forms.ModelForm):
     class Meta:
         model = FlatLocation

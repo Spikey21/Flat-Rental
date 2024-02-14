@@ -5,11 +5,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django_filters.views import FilterView
 
 from .filter import FlatFilter
-from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet
+from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm
 from .models import Flat
 
 User = get_user_model()
@@ -69,6 +69,36 @@ class FlatListView(FilterView):
         return queryset
 
 
-class FlatDetailView(generic.DetailView):
+class FlatDetailView(LoginRequiredMixin, UpdateView):
     model = Flat
     template_name = 'detail.html'
+
+
+class FlatUpdateView(generic.DetailView):
+    model = Flat
+    template_name = 'update.html'
+    form_class = UpdateFlatForm
+    success_url = reverse_lazy("home")
+
+    def get_context_data(self, **kwargs):
+        context = super(FlatUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
+            context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
+        else:
+            context['location_items'] = LocationInlineFormSet(prefix='location_item_set')
+            context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_location = context['location_items']
+        formset_image = context['image_items']
+        self.object = form.save()
+        if self.object.id != None:
+            if form.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+                formset_location.instance = self.object
+                formset_location.save()
+                formset_image.instance = self.object
+                formset_image.save()
+        return super().form_valid(form)
