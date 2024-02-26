@@ -8,7 +8,7 @@
 
 <div class="container p-3">
         <h1 class="text-center">
-            <p class="text-uppercase font-weight-bold font-italic">Add flat to rent</p>
+            <p class="text-uppercase font-weight-bold font-italic">Update flat</p>
         </h1>
         <form action="{% url 'create' %}" method="post">
             <div class="row">
@@ -149,19 +149,12 @@
             </div>
             <div class="form-group row m-2">
                 <div class="col-sm-12 text-right">
-                    <button type="submit" class="btn btn-success">Add flat</button>
+                    <button type="submit" class="btn btn-success">Update flat</button>
                 </div>
             </div>
             {% csrf_token %}
         </form>
 </div>
 
-<div class="container-fluid p-3">
-    <div class="form-group">
-        <div class="col-sm-2">
-            <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-secondary">Back</a>
-        </div>
-    </div>
-</div>
 
 {% endblock %}

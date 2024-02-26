@@ -4,8 +4,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django_filters.views import FilterView
 
 from .filter import FlatFilter
@@ -69,12 +68,12 @@ class FlatListView(FilterView):
         return queryset
 
 
-class FlatDetailView(LoginRequiredMixin, UpdateView):
+class FlatDetailView(LoginRequiredMixin, DetailView):
     model = Flat
     template_name = 'detail.html'
 
 
-class FlatUpdateView(generic.DetailView):
+class FlatUpdateView(LoginRequiredMixin, UpdateView):
     model = Flat
     template_name = 'update.html'
     form_class = UpdateFlatForm
