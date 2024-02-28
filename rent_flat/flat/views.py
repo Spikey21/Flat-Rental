@@ -103,7 +103,7 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class MyReportListView(LoginRequiredMixin, ListView):
+class MyFlatListView(LoginRequiredMixin, ListView):
     login_url = 'login'
     model = Flat
     template_name = 'my_ads.html'
