@@ -101,3 +101,16 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
                 formset_image.instance = self.object
                 formset_image.save()
         return super().form_valid(form)
+
+
+class MyReportListView(LoginRequiredMixin, ListView):
+    login_url = 'login'
+    model = Flat
+    template_name = 'my_ads.html'
+    context_object_name = 'flats'
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        queryset = super().get_queryset(**kwargs)
+        queryset = queryset.filter(user=user)
+        return queryset
