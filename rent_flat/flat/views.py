@@ -53,7 +53,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
 
 class FlatListView(FilterView):
     model = Flat
-    template_name = 'flat.html'
+    template_name = 'flats.html'
     context_object_name = 'flats'
     paginate_by = 10
     filterset_class = FlatFilter

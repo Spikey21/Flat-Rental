@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from .models import Flat, FlatImage, Equip, FlatLocation
+from .models import Flat, FlatImage, FlatLocation, FlatDetail
 
 
 class FlatForm(forms.ModelForm):
@@ -14,6 +14,17 @@ class UpdateFlatForm(forms.ModelForm):
     class Meta:
         model = Flat
         exclude = ('created_at', 'user')
+
+
+class DetailForm(forms.ModelForm):
+    class Meta:
+        model = FlatDetail
+        exclude = ('flat',)
+
+    def __init__(self, *args, **kwargs):
+        super(DetailForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class LocationForm(forms.ModelForm):
