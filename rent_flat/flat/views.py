@@ -8,7 +8,7 @@ from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django_filters.views import FilterView
 
 from .filter import FlatFilter
-from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm
+from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm, DetailInlineFormSet
 from .models import Flat
 
 User = get_user_model()
@@ -30,20 +30,25 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(FlatCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
+            context['detail_items'] = DetailInlineFormSet(self.request.POST, prefix='detail_item_set')
             context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
             context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
         else:
+            context['detail_items'] = DetailInlineFormSet(prefix='detail_item_set')
             context['location_items'] = LocationInlineFormSet(prefix='location_item_set')
             context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
+        formset_detail = context['detail_items']
         formset_location = context['location_items']
         formset_image = context['image_items']
         self.object = form.save()
         if self.object.id != None:
-            if form.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+            if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+                formset_detail.instance = self.object
+                formset_detail.save()
                 formset_location.instance = self.object
                 formset_location.save()
                 formset_image.instance = self.object
@@ -82,20 +87,25 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(FlatUpdateView, self).get_context_data(**kwargs)
         if self.request.POST:
+            context['detail_items'] = DetailInlineFormSet(self.request.POST, prefix='detail_item_set')
             context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
             context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
         else:
+            context['detail_items'] = DetailInlineFormSet(prefix='detail_item_set')
             context['location_items'] = LocationInlineFormSet(prefix='location_item_set')
             context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
+        detail_location = context['detail_items']
         formset_location = context['location_items']
         formset_image = context['image_items']
         self.object = form.save()
         if self.object.id != None:
-            if form.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+            if form.is_valid() and detail_location.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+                detail_location.instance = self.object
+                detail_location.save()
                 formset_location.instance = self.object
                 formset_location.save()
                 formset_image.instance = self.object

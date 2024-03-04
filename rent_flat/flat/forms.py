@@ -61,4 +61,6 @@ class FlatImageForm(forms.ModelForm):
 
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=12)
 LocationInlineFormSet = inlineformset_factory(Flat, FlatLocation, form=LocationForm, extra=1)
+DetailInlineFormSet = inlineformset_factory(Flat, FlatDetail, form=DetailForm, extra=1)
+
 
