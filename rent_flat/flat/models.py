@@ -28,12 +28,6 @@ class Flat(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        constraints = (
-            # for checking in the DB
-            CheckConstraint(
-                check=Q(area__gte=0.0),
-                name='flat_area_range'),
-        )
 
     def __str__(self):
         return f'{self.title} | {self.created_at}'
@@ -54,8 +48,16 @@ class FlatDetail(models.Model):
     year = models.PositiveIntegerField()
     flat = models.OneToOneField(Flat, on_delete=models.CASCADE, related_name='detail')
 
+    class Meta:
+        constraints = (
+            # for checking in the DB
+            CheckConstraint(
+                check=Q(area__gte=0.0),
+                name='flatDetail_area_range'),
+        )
+
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.flat}: {self.year}|{self.area}'
 
 
 class FlatImage(models.Model):
