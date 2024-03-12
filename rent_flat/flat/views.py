@@ -44,6 +44,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
         formset_detail = context['detail_items']
         formset_location = context['location_items']
         formset_image = context['image_items']
+        form.instance.user = self.request.user
         self.object = form.save()
         if self.object.id != None:
             if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
@@ -53,7 +54,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
                 formset_location.save()
                 formset_image.instance = self.object
                 formset_image.save()
-        return super().form_valid(form)
+        return super(FlatCreateView, self).form_valid(form)
 
 
 class FlatListView(FilterView):
@@ -110,7 +111,7 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
                 formset_location.save()
                 formset_image.instance = self.object
                 formset_image.save()
-        return super().form_valid(form)
+        return super(FlatUpdateView, self).form_valid(form)
 
 
 class MyFlatListView(LoginRequiredMixin, ListView):

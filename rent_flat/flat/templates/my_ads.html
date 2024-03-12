@@ -24,8 +24,8 @@ My reports
                                 <h3 class="card-header">{{flat.title}}</h3>
                                 <div class="card-body">
                                     <p class="card-text">Price: {{flat.price}}</p>
-                                    <p class="card-text">Area: {{flat.area}}</p>
-                                    <p class="card-text">Year: {{flat.year}}</p>
+                                    <p class="card-text">Area: {{flat.detail.area}}</p>
+                                    <p class="card-text">Location: {{flat.location}}</p>
                                     <p class="card-text"><small class="text-muted">Added: {{flat.created_at}}</small></p>
                                     <a href="{% url 'update' flat.id %}" class="btn btn-primary">Check flat</a>
                                 </div>
@@ -43,3 +43,5 @@ My reports
         </div>
     </div>
 </div>
+
+{% endblock %}
