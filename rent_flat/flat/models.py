@@ -89,7 +89,7 @@ class FlatLocation(models.Model):
                                  auto_choose=True,
                                  sort=True)
     street = models.CharField(max_length=100, blank=True, null=True)
-    flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='location')
+    flat = models.OneToOneField(Flat, on_delete=models.CASCADE, related_name='location')
 
     def __str__(self):
         return f'{self.city}'

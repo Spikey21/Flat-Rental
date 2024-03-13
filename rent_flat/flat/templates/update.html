@@ -13,10 +13,15 @@
         <form action="{% url 'create' %}" method="post">
             <div class="row">
                 <div class="col-sm-9">
+                    <h3 class="text-start m-4">
+                        <p class="font-weight-bold font-italic">{{flat.location.district}},  {{flat.location}}</p>
+                    </h3>
+                </div>
+                <div class="col-sm-9">
                     <div class="form-group m-2">
                         <label for="inputTitle" class="col-sm-6 col-form-label">Title</label>
                         <div class="col-sm-12">
-                            <input type="text" class="form-control" id="inputTitle" placeholder="Title" name="title" required>
+                            <input type="text" class="form-control" id="inputTitle" value="{{flat.title}}" name="title" required>
                         </div>
                     </div>
                 </div>
@@ -24,20 +29,29 @@
                     <div class="form-group m-2">
                         <label for="inputPrice" class="col-sm-6 col-form-label">Price</label>
                         <div class="col-sm-12">
-                            <input type="number" class="form-control" id="inputPrice" name="price" required>
+                            <input type="number" class="form-control" id="inputPrice" value="{{flat.price}}" name="price" required>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <div class="form-check" id="inputStatus">
-                        <div class="form-row m-2">
-                            {% for value,text in form.status.field.choices  %}
-                            <div class="col-sm-3">
-                                <input class="form-check-input"  type="radio" name="{{ value }}" > {{ text }}
+                        <div class="form-row m-3">
+                            <div class="form-check m-2">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="Radios1" value="{{ flat.status }" checked>
+                                <label class="form-check-label" for="Radios1">
+                                    {{flat.get_status_display}}
+                                </label>
                             </div>
+                            {% for value,text in form.status.field.choices  %}
+                                {% if flat.status not in value %}
+                                    <div class="form-check m-2">
+                                        <input class="form-check-input" type="radio" name="exampleRadios" id="value" value="{{ value }">
+                                        <label class="form-check-label" for="value">
+                                            {{text}}
+                                        </label>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
-                    </div>
                 </div>
             </div>
             <div class="form-group m-4">
@@ -50,34 +64,62 @@
                 <div class="form-group row items-group">
                     <div class="col">
                         {{ form.area.label_tag }}
-                        {{ form.area}}
+                        <input type="number" class="form-control" id="inputArea" value="{{flat.detail.area}}" name="detail.area" required>
                     </div>
                     <div class="col">
                         {{ form.rooms.label_tag }}
-                        {{ form.rooms}}
+                        <select id="inputRooms" class="form-control" name="detail.rooms" required>
+                            <option value="{{flat.detail.rooms}}">{{ flat.detail.get_rooms_display }}</option>
+                            {% for value,text in form.rooms.field.choices  %}
+                                {% if flat.detail.rooms not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col">
                         {{ form.development_type.label_tag }}
-                        {{ form.development_type}}
+                        <select id="inputDev" class="form-control" name="detail.development_type" required>
+                            <option value="{{flat.detail.development_type}}">{{ flat.detail.get_development_type_display }}</option>
+                            {% for value,text in form.development_type.field.choices  %}
+                                {% if flat.detail.development_type not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col">
                         {{ form.floor.label_tag }}
-                        {{ form.floor}}
+                        <select id="inputFloor" class="form-control" name="detail.floor" required>
+                            <option value="{{flat.detail.floor}}">{{ flat.detail.get_floor_display }}</option>
+                            {% for value,text in form.floor.field.choices  %}
+                                {% if flat.detail.floor not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col">
                         {{ form.heating.label_tag }}
-                        {{ form.heating}}
+                        <select id="inputHeat" class="form-control" name="detail.heating" required>
+                            <option value="{{flat.detail.heating}}">{{ flat.detail.get_heating_display }}</option>
+                            {% for value,text in form.heating.field.choices  %}
+                                {% if flat.detail.heating not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col">
                         {{ form.year.label_tag }}
-                        {{ form.year}}
+                        <input type="number" class="form-control" id="inputYear" value="{{flat.detail.year}}" name="detail.year" required>
                     </div>
                 </div>
                 {% endfor %}
             </div>
             <div class="form-group m-4">
                 <label for="textarea">Text</label>
-                <textarea class="form-control" id="textarea" rows="8" name="text" placeholder="Describe your flat" required></textarea>
+                <textarea class="form-control" id="textarea" rows="8" name="text" required>{{flat.text}}</textarea>
             </div>
             <div class="form-group m-4">
                 <label for="inputEquipment" class="col-form-label">Equipment</label>
@@ -86,34 +128,17 @@
                     <div class="form-row m-2">
                         {% for value,text in form.equipment.field.choices  %}
                         <div class="col-sm-3">
-                            <input class="form-check-input"  type="checkbox" name="{{ value }}" > {{ text }}
+                            {% for equip in flat.equipment.all %}
+                                {% if equip.name in text %}
+                                    <input class="form-check-input"  type="checkbox" name="{{ value }}" checked> {{ text }}
+                                {% else %}
+                                    <input class="form-check-input"  type="checkbox" name="{{ value }}"> {{ text }}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-            <div class="form-group m-4">
-                {{ location_items.media.js }}
-                <legend>Add location</legend>
-                <hr class="my-4">
-                {{ location_items.management_form }}
-                {{ location_items.non_form_errors }}
-                {% for form in location_items %}
-                <div class="form-group row items-group">
-                    <div class="col">
-                        {{ form.city.label_tag }}
-                        {{ form.city}}
-                    </div>
-                    <div class="col">
-                        {{ form.district.label_tag }}
-                        {{ form.district}}
-                    </div>
-                    <div class="col">
-                        {{ form.street.label_tag }}
-                        {{ form.street}}
-                    </div>
-                </div>
-                {% endfor %}
             </div>
             <div class="form-group m-4">
                 <legend>Add image</legend>
