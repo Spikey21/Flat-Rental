@@ -13,7 +13,12 @@ class FlatForm(forms.ModelForm):
 class UpdateFlatForm(forms.ModelForm):
     class Meta:
         model = Flat
-        exclude = ('created_at', 'user')
+        fields = ('title', 'text', 'price', 'status', 'equipment')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateFlatForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class DetailForm(forms.ModelForm):

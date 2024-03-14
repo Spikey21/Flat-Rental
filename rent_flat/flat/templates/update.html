@@ -20,23 +20,26 @@
                 <div class="col-sm-9">
                     <div class="form-group m-2">
                         <label for="inputTitle" class="col-sm-6 col-form-label">Title</label>
+                        {{form.title}}
                         <div class="col-sm-12">
-                            <input type="text" class="form-control" id="inputTitle" value="{{flat.title}}" name="title" required>
+                            <input type="text" class="form-control" id="inputTitle" value="{{flat.title}}" name="title">
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group m-2">
                         <label for="inputPrice" class="col-sm-6 col-form-label">Price</label>
+                        {{form.price}}
                         <div class="col-sm-12">
-                            <input type="number" class="form-control" id="inputPrice" value="{{flat.price}}" name="price" required>
+                            <input type="number" class="form-control" id="inputPrice" value="{{flat.price}}" name="price">
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
-                        <div class="form-row m-3">
+                        <div class="form-row m-2">
+                            {{form.status}}
                             <div class="form-check m-2">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="Radios1" value="{{ flat.status }" checked>
+                                <input class="form-check-input" type="radio" name="status" id="Radios1" value="{{ flat.status }" checked>
                                 <label class="form-check-label" for="Radios1">
                                     {{flat.get_status_display}}
                                 </label>
@@ -44,7 +47,7 @@
                             {% for value,text in form.status.field.choices  %}
                                 {% if flat.status not in value %}
                                     <div class="form-check m-2">
-                                        <input class="form-check-input" type="radio" name="exampleRadios" id="value" value="{{ value }">
+                                        <input class="form-check-input" type="radio" name="status" id="value" value="{{ value }">
                                         <label class="form-check-label" for="value">
                                             {{text}}
                                         </label>
@@ -56,76 +59,15 @@
             </div>
             <div class="form-group m-4">
                 <label for="textarea">Text</label>
-                <textarea class="form-control" id="textarea" rows="8" name="text" required>{{flat.text}}</textarea>
+                {{form.text}}
+                <textarea class="form-control" id="textarea" rows="8" name="text">{{flat.text}}</textarea>
             </div>
-            <div class="form-group m-4">
-                <legend>DETAILS</legend>
-                <hr class="my-4">
-                <div class="form-group row items-group">
-                    <div class="col">
-                        {{ flat.detail.area.label_tag }}
-                        <p class="text-start">{{flat.detail.area}}</p>
-                    </div>
-                    <div class="col">
-                        {{ flat.detail.rooms.label_tag }}
-                        <p class="text-start">{{flat.detail.rooms}}</p>
-                    </div>
-                    <div class="col">
-                        {{ flat.detail.development_type.label_tag }}
-                        <p class="text-start">{{flat.detail.development_type}}</p>
-                    </div>
-                    <div class="col">
-                        {{ flat.detail.floor.label_tag }}
-                        <p class="text-start">{{flat.detail.floor}}</p>
-                    </div>
-                    <div class="col">
-                        {{ flat.detail.heating.label_tag }}
-                        <p class="text-start">{{flat.detail.heating}}</p>
-                    </div>
-                    <div class="col">
-                        {{ flat.detail.year.label_tag }}
-                        <p class="text-start">{{flat.detail.year}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group m-4">
-                <label for="inputEquipment" class="col-form-label">Equipment</label>
-                <hr class="my-4">
-               <div class="form-check" id="inputEquipment">
-                    <div class="form-row m-2">
-                        {% for value,text in form.equipment.field.choices  %}
-                        <div class="col-sm-3">
-                            {% for equip in flat.equipment.all %}
-                                {% if equip.name in text %}
-                                    <input class="form-check-input"  type="checkbox" name="{{ value }}" checked> {{ text }}
-                                {% else %}
-                                    <input class="form-check-input"  type="checkbox" name="{{ value }}"> {{ text }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group m-4">
-                <legend>Image</legend>
-                <hr class="my-4">
-                <div class="col-sm-6">
-                    {% if flat.images %}
-                    <div class="form-group row items-group">
-                            <div class="col-sm-3 ">
-                                <img src="{{flat.images.url}}" class="rounded mx-auto d-block"  alt="Report image">
-                            </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+            {% csrf_token %}
             <div class="form-group row m-2">
                 <div class="col-sm-12 text-right">
                     <button type="submit" class="btn btn-success">Update flat</button>
                 </div>
             </div>
-            {% csrf_token %}
         </form>
 </div>
 
