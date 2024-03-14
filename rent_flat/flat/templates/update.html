@@ -10,7 +10,7 @@
         <h1 class="text-center">
             <p class="text-uppercase font-weight-bold font-italic">Update flat</p>
         </h1>
-        <form action="{% url 'create' %}" method="post">
+        <form method="post">
             <div class="row">
                 <div class="col-sm-9">
                     <h3 class="text-start m-4">
@@ -55,71 +55,38 @@
                 </div>
             </div>
             <div class="form-group m-4">
-                {{ detail_items.media.js }}
-                <legend>DETAILS</legend>
-                <hr class="my-4">
-                {{ detail_items.management_form }}
-                {{ detail_items.non_form_errors }}
-                {% for form in detail_items %}
-                <div class="form-group row items-group">
-                    <div class="col">
-                        {{ form.area.label_tag }}
-                        <input type="number" class="form-control" id="inputArea" value="{{flat.detail.area}}" name="detail.area" required>
-                    </div>
-                    <div class="col">
-                        {{ form.rooms.label_tag }}
-                        <select id="inputRooms" class="form-control" name="detail.rooms" required>
-                            <option value="{{flat.detail.rooms}}">{{ flat.detail.get_rooms_display }}</option>
-                            {% for value,text in form.rooms.field.choices  %}
-                                {% if flat.detail.rooms not in value %}
-                                    <option value="{{ value }}">{{ text }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col">
-                        {{ form.development_type.label_tag }}
-                        <select id="inputDev" class="form-control" name="detail.development_type" required>
-                            <option value="{{flat.detail.development_type}}">{{ flat.detail.get_development_type_display }}</option>
-                            {% for value,text in form.development_type.field.choices  %}
-                                {% if flat.detail.development_type not in value %}
-                                    <option value="{{ value }}">{{ text }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col">
-                        {{ form.floor.label_tag }}
-                        <select id="inputFloor" class="form-control" name="detail.floor" required>
-                            <option value="{{flat.detail.floor}}">{{ flat.detail.get_floor_display }}</option>
-                            {% for value,text in form.floor.field.choices  %}
-                                {% if flat.detail.floor not in value %}
-                                    <option value="{{ value }}">{{ text }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col">
-                        {{ form.heating.label_tag }}
-                        <select id="inputHeat" class="form-control" name="detail.heating" required>
-                            <option value="{{flat.detail.heating}}">{{ flat.detail.get_heating_display }}</option>
-                            {% for value,text in form.heating.field.choices  %}
-                                {% if flat.detail.heating not in value %}
-                                    <option value="{{ value }}">{{ text }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col">
-                        {{ form.year.label_tag }}
-                        <input type="number" class="form-control" id="inputYear" value="{{flat.detail.year}}" name="detail.year" required>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="form-group m-4">
                 <label for="textarea">Text</label>
                 <textarea class="form-control" id="textarea" rows="8" name="text" required>{{flat.text}}</textarea>
+            </div>
+            <div class="form-group m-4">
+                <legend>DETAILS</legend>
+                <hr class="my-4">
+                <div class="form-group row items-group">
+                    <div class="col">
+                        {{ flat.detail.area.label_tag }}
+                        <p class="text-start">{{flat.detail.area}}</p>
+                    </div>
+                    <div class="col">
+                        {{ flat.detail.rooms.label_tag }}
+                        <p class="text-start">{{flat.detail.rooms}}</p>
+                    </div>
+                    <div class="col">
+                        {{ flat.detail.development_type.label_tag }}
+                        <p class="text-start">{{flat.detail.development_type}}</p>
+                    </div>
+                    <div class="col">
+                        {{ flat.detail.floor.label_tag }}
+                        <p class="text-start">{{flat.detail.floor}}</p>
+                    </div>
+                    <div class="col">
+                        {{ flat.detail.heating.label_tag }}
+                        <p class="text-start">{{flat.detail.heating}}</p>
+                    </div>
+                    <div class="col">
+                        {{ flat.detail.year.label_tag }}
+                        <p class="text-start">{{flat.detail.year}}</p>
+                    </div>
+                </div>
             </div>
             <div class="form-group m-4">
                 <label for="inputEquipment" class="col-form-label">Equipment</label>
@@ -141,17 +108,16 @@
                 </div>
             </div>
             <div class="form-group m-4">
-                <legend>Add image</legend>
+                <legend>Image</legend>
                 <hr class="my-4">
-                {{ image_items.management_form }}
-                {{ image_items.non_form_errors }}
-                <div class="form-group row items-group">
-                    {% for form in image_items %}
-                        <div class="col-sm-3 ">
-                            {{ form.image.errors }}
-                            {{ form.image}}
-                        </div>
-                    {% endfor %}
+                <div class="col-sm-6">
+                    {% if flat.images %}
+                    <div class="form-group row items-group">
+                            <div class="col-sm-3 ">
+                                <img src="{{flat.images.url}}" class="rounded mx-auto d-block"  alt="Report image">
+                            </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group row m-2">
