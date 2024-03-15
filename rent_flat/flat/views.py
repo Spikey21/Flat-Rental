@@ -86,6 +86,17 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UpdateFlatForm
     success_url = reverse_lazy("home")
 
+    def get_queryset(self, *args, **kwargs):
+        equipment_list = self.request.GET.get('equipment_list')
+        queryset = super().get_queryset(**kwargs)
+        if equipment_list:
+            queryset = queryset.filter(
+                Q(title__icontains=search) |
+                Q(text__icontains=search) |
+                Q(category__icontains=search)
+            )
+        return queryset
+
     # def get_context_data(self, **kwargs):
     #     context = super(FlatUpdateView, self).get_context_data(**kwargs)
     #     if self.request.POST:
