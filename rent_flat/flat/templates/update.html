@@ -8,7 +8,7 @@
 
 <div class="container p-3">
         <h1 class="text-center">
-            <p class="text-uppercase font-weight-bold font-italic">Update flat</p>
+            <p class="text-uppercase font-weight-bold font-italic">Update Ads</p>
         </h1>
         <form method="post">
             <div class="row">
@@ -17,37 +17,47 @@
                         <p class="font-weight-bold font-italic">{{flat.location.district}},  {{flat.location}}</p>
                     </h3>
                 </div>
-                <div class="col-sm-9">
-                    <div class="form-group m-2">
-                        <label  class="col-sm-6 col-form-label">Title</label>
-                        {{form.title}}
-                    </div>
-                </div>
                 <div class="col-sm-3">
-                    <div class="form-group m-2">
-                        <label class="col-sm-6 col-form-label">Price</label>
-                        {{form.price}}
-
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                        <div class="form-row m-2">
-                            {{form.status}}
+                        <div class="form-row m-4">
+                            <select id="inputStatus" class="form-control" name="status">
+                            <option value="{{flat.status}}">{{ flat.get_status_display }}</option>
+                            {% for value,text in form.status.field.choices  %}
+                                {% if flat.status not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                         </div>
                 </div>
+                <div class="col-sm-9">
+                    <div class="form-group m-2">
+                        <label for="inputTitle" class="col-sm-6 col-form-label">Title</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="inputTitle" value="{{flat.title}}" name="title">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group m-2">
+                        <label for="inputPrice" class="col-sm-6 col-form-label">Price</label>
+                        <div class="col-sm-12">
+                            <input type="number" class="form-control" id="inputPrice" name="price" value="{{flat.price}}">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-group m-4">
-                <label >Text</label>
-                {{form.text}}
+                <label for="textarea">Text</label>
+                <textarea class="form-control" id="textarea" rows="8" name="text">{{flat.text}}</textarea>
             </div>
             <div class="form-group m-4">
-                <label for="inputEquipment" class="col-form-label">Equipments</label>
+                <label for="inputEquipment" class="col-form-label">EQUIPMENTS</label>
                 <hr class="my-4">
                <div class="form-check" id="inputEquipment">
                     <div class="form-row m-2">
                         {% for value,text in form.equipment.field.choices  %}
                             <div class="col-sm-3" >
-								<div class="form-group m-2">
+								<div class="form-group m-4">
                                     {% if value not in equipments %}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value={{value}} name="equipment"> {{ text }}
@@ -63,8 +73,58 @@
                     </div>
                 </div>
             </div>
-
+            <div class="form-group m-4">
+                <label for="inputDetail" class="col-form-label">DETAILS</label>
+                <hr class="my-4">
+                <div class="form-group row items-group" id="inputDetail">
+                    <div class="col-sm-4 ">
+                        <label for="Area" class="col-sm-6 col-form-label">Area: </label>
+                        <a class="text-center" id="Area">{{flat.detail.area}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Rooms" class="col-sm-6 col-form-label">Rooms: </label>
+                        <a class="text-center" id="Rooms">{{flat.detail.rooms}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="DevType" class="col-sm-6 col-form-label">Development Type: </label>
+                        <a class="text-center" id="DevType">{{flat.detail.development_type}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Floor" class="col-sm-6 col-form-label">Floor: </label>
+                        <a class="text-center" id="Floor">{{flat.detail.floor}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Heating" class="col-sm-6 col-form-label">Heating: </label>
+                        <a class="text-center" id="Heating">{{flat.detail.heating}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Year" class="col-sm-6 col-form-label">Year: </label>
+                        <a class="text-center" id="Year">{{flat.detail.year}}</a>
+                    </div>
+                </div>
+            </div>
             {% csrf_token %}
+            <div class="form-group m-4">
+                <label for="inputImage" class="col-form-label">IMAGE</label>
+                <hr class="my-4">
+                <div class="col-sm-6" id="InputImage">
+                    {% if flat.images %}
+                    <div class="form-group row items-group">
+                            <div class="col-sm-3 ">
+                                <img src="{{flat.images.url}}" class="rounded mx-auto d-block">
+                            </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-group row items-group">
+                    {% for form in image_items %}
+                        <div class="col-sm-3 ">
+                            {{ form.image.errors }}
+                            {{ form.image}}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="form-group row m-2">
                 <div class="col-sm-12 text-right">
                     <button type="submit" class="btn btn-success">Update flat</button>

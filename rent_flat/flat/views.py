@@ -89,7 +89,22 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(FlatUpdateView, self).get_context_data(**kwargs)
         context['equipments'] = Equip.objects.filter(flat=self.object).values_list('id', flat=True)
+        if self.request.POST:
+            context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
+        else:
+            context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
         return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_image = context['image_items']
+        form.instance.user = self.request.user
+        self.object = form.save()
+        if self.object.id != None:
+            if form.is_valid() and formset_image.is_valid():
+                formset_image.instance = self.object
+                formset_image.save()
+        return super(FlatUpdateView, self).form_valid(form)
 
 
 class FlatDetailUpdateView(LoginRequiredMixin, UpdateView):
