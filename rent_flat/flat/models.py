@@ -22,7 +22,7 @@ class Flat(models.Model):
     price = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
-    equipment = models.ManyToManyField(Equip, related_name='flat', blank=True, null=True)
+    equipment = models.ManyToManyField(Equip, related_name='flat', blank=True)
     user = models.ForeignKey(User, related_name='flat', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=Status.choices(), default=Status.Active)
 
