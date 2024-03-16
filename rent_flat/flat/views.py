@@ -10,7 +10,7 @@ from django_filters.views import FilterView
 from .filter import FlatFilter
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm, DetailInlineFormSet, \
     ImageUpdateForm, DetailUpdateForm, UpdateLocationForm
-from .models import Flat, Equip
+from .models import Flat, Equip, FlatDetail, FlatLocation
 
 User = get_user_model()
 
@@ -98,7 +98,6 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
         formset_image = context['image_items']
-        form.instance.user = self.request.user
         self.object = form.save()
         if self.object.id != None:
             if form.is_valid() and formset_image.is_valid():
@@ -108,14 +107,14 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class FlatDetailUpdateView(LoginRequiredMixin, UpdateView):
-    model = Flat
+    model = FlatDetail
     template_name = 'update_detail.html'
     form_class = DetailUpdateForm
     success_url = reverse_lazy("home")
 
 
 class FlatLocationUpdateView(LoginRequiredMixin, UpdateView):
-    model = Flat
+    model = FlatLocation
     template_name = 'update_location.html'
     form_class = UpdateLocationForm
     success_url = reverse_lazy("home")
