@@ -110,14 +110,15 @@ class FlatDetailUpdateView(LoginRequiredMixin, UpdateView):
     model = FlatDetail
     template_name = 'update_detail.html'
     form_class = DetailUpdateForm
-    success_url = reverse_lazy("home")
+    context_object_name = 'detail'
+    success_url = reverse_lazy("my_ads")
 
 
 class FlatLocationUpdateView(LoginRequiredMixin, UpdateView):
     model = FlatLocation
     template_name = 'update_location.html'
     form_class = UpdateLocationForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("my_ads")
 
 
 class FlatImageUpdateView(LoginRequiredMixin, UpdateView):
