@@ -54,6 +54,11 @@ class UpdateLocationForm(forms.ModelForm):
         model = FlatLocation
         fields = ('city', 'district', 'street')
 
+    def __init__(self, *args, **kwargs):
+        super(UpdateLocationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True

@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Create flat{% endblock %}
+
+{% block content %}
+{% block headjavascript %}{{ form.media.js }}{% endblock %}
+{% load widget_tweaks %}
+
+<div class="container p-3">
+        <h1 class="text-center">
+            <p class="text-uppercase font-weight-bold font-italic">CHANGE FLAT LOCATION</p>
+        </h1>
+        <h3 class="text-center">
+            <p class="text-uppercase font-weight-bold font-italic">{{ location.flat.title }}</p>
+        </h3>
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputCity" class="col-sm-6 col-form-label">City: </label>
+                            <div class="col-sm-12" id="inputCity">
+                                {{ form.city}}
+                            </div>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputDistrict" class="col-sm-6 col-form-label">District: </label>
+                            <div class="col-sm-12" id="inputDistrict">
+                                {{ form.district}}
+                            </div>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-row m-2">
+                        <label for="inputStreet" class="col-sm-6 col-form-label">Street</label>
+                        <div class="col-sm-12" id="inputStreet">
+                            {{ form.street}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% csrf_token %}
+            <div class="form-group m-4">
+                <div class="col-sm-12 text-right">
+                    <button type="submit" class="btn btn-success">SAVE</button>
+                </div>
+            </div>
+        </form>
+</div>
+
+{% endblock %}

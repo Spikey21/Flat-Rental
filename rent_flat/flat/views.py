@@ -118,6 +118,7 @@ class FlatLocationUpdateView(LoginRequiredMixin, UpdateView):
     model = FlatLocation
     template_name = 'update_location.html'
     form_class = UpdateLocationForm
+    context_object_name = 'location'
     success_url = reverse_lazy("my_ads")
 
 
