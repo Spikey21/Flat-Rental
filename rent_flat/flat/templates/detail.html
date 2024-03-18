@@ -19,12 +19,12 @@
                     <p class="text-uppercase font-weight-bold font-italic">{{flat.price}}</p>
                 </h1>
                 <h3 class="text-start">
-                    <p class="font-weight-bold font-italic">Area - {{flat.area}}</p>
+                    <p class="font-weight-bold font-italic">Area - {{flat.detail.area}}</p>
                 </h3>
-                <p class="text-start">Year: {{flat.year}}</p>
-                <p class="text-start">Development type: {{flat.development_type}}</p>
-                <p class="text-start">Floor: {{flat.floor}}</p>
-                <p class="text-start">Heating: {{flat.heating}}</p>
+                <p class="text-start">Year: {{flat.detail.year}}</p>
+                <p class="text-start">Development type: {{flat.detail.development_type}}</p>
+                <p class="text-start">Floor: {{flat.detail.floor}}</p>
+                <p class="text-start">Heating: {{flat.detail.get_heating_display}}</p>
                 <p class="text-start"> Equipments:
                     {% if flat.equipment %}
                         {% for equipment in flat.equipment.all   %}

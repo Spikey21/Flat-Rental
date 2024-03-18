@@ -70,6 +70,7 @@ class FlatListView(FilterView):
         queryset = super().get_queryset(**kwargs)
         if location:
             queryset = queryset.filter(
+                Q(location__icontains=location),
                 Q(title__icontains=location)
             )
         return queryset
