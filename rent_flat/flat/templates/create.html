@@ -12,7 +12,7 @@
         </h1>
         <form action="{% url 'create' %}" method="post">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-9">
                     <div class="form-group m-2">
                         <label for="inputTitle" class="col-sm-6 col-form-label">Title</label>
                         <div class="col-sm-12">
@@ -28,78 +28,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group m-2">
-                        <label for="inputArea" class="col-sm-6 col-form-label">Area</label>
-                        <div class="col-sm-12">
-                            <input type="number" step="0.01"  class="form-control" id="inputArea" name="area" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group m-2">
-                        <label for="inputYear" class="col-sm-6 col-form-label">Year</label>
-                        <div class="col-sm-12">
-                            <input type="number" class="form-control" id="inputYear" name="year" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group m-2">
-                        <label for="inputRoom" class="col-sm-6 col-form-label">Rooms</label>
-                        <div class="col-sm-12">
-                            <select id="inputRoom" class="form-control" name="rooms" required>
-                                {% for value,text in form.rooms.field.choices  %}
-                                    <option value="{{ value }}">{{ text }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputDevelopment_type" class="col-sm-6 col-form-label">Development Type</label>
-                    <div class="col-sm-12">
-                        <select id="inputDevelopment_type" class="form-control" name="development_type" required>
-                            {% for value,text in form.development_type.field.choices  %}
-                                <option value="{{ value }}">{{ text }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputFloor" class="col-sm-6 col-form-label">Floors</label>
-                    <div class="col-sm-12">
-                        <select id="inputFloor" class="form-control" name="floor" required>
-                            {% for value,text in form.floor.field.choices  %}
-                            <option value="{{ value }}">{{ text }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-4">
-                <div class="form-group m-2">
-                    <label for="inputHeating" class="col-sm-6 col-form-label">Heating</label>
-                    <div class="col-sm-12">
-                        <select id="inputHeating" class="form-control" name="heating" required>
-                            {% for value,text in form.heating.field.choices  %}
-                            <option value="{{ value }}">{{ text }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                </div>
             </div>
+                <div class="form-group m-4">
+                    {{ detail_items.media.js }}
+                    <legend>DETAILS</legend>
+                    <hr class="my-4">
+                    {{ detail_items.management_form }}
+                    {{ detail_items.non_form_errors }}
+                    {% for form in detail_items %}
+                    <div class="form-group row items-group">
+                        <div class="col">
+                            {{ form.area.label_tag }}
+                            {{ form.area}}
+                        </div>
+                        <div class="col">
+                            {{ form.rooms.label_tag }}
+                            {{ form.rooms}}
+                        </div>
+                        <div class="col">
+                            {{ form.development_type.label_tag }}
+                            {{ form.development_type}}
+                        </div>
+                        <div class="col">
+                            {{ form.floor.label_tag }}
+                            {{ form.floor}}
+                        </div>
+                        <div class="col">
+                            {{ form.heating.label_tag }}
+                            {{ form.heating}}
+                        </div>
+                        <div class="col">
+                            {{ form.year.label_tag }}
+                            {{ form.year}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             <div class="form-group m-4">
                 <label for="textarea">Text</label>
                 <textarea class="form-control" id="textarea" rows="8" name="text" placeholder="Describe your flat" required></textarea>
             </div>
             <div class="form-group m-4">
-                <h1 class="display-3 text-uppercase font-weight-bold">{{report.get_status_display}}</h1>
-                <label for="inputEquipment" class="col-form-label">Equipment</label>
+                <label for="inputEquipment" class="col-form-title">Equipment</label>
                 <hr class="my-4">
                <div class="form-check" id="inputEquipment">
                     <div class="form-row m-2">
@@ -113,7 +83,7 @@
             </div>
             <div class="form-group m-4">
                 {{ location_items.media.js }}
-                <legend>Add location</legend>
+                <legend>LOCATION</legend>
                 <hr class="my-4">
                 {{ location_items.management_form }}
                 {{ location_items.non_form_errors }}
@@ -135,7 +105,7 @@
                 {% endfor %}
             </div>
             <div class="form-group m-4">
-                <legend>Add image</legend>
+                <legend>IMAGES</legend>
                 <hr class="my-4">
                 {{ image_items.management_form }}
                 {{ image_items.non_form_errors }}

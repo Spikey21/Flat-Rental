@@ -2,17 +2,17 @@ from enum import Enum
 
 
 class Rooms(Enum):
-    one = '1'
-    two = '2'
-    three = '3'
-    four = '4'
-    five = '5'
-    six = '6'
-    seven = '7'
-    eight = '8'
-    nine = '9'
-    ten = '10'
-    more = 'more than 10'
+    One = '1'
+    Two = '2'
+    Three = '3'
+    Four = '4'
+    Five = '5'
+    Six = '6'
+    Seven = '7'
+    Eight = '8'
+    Nine = '9'
+    Ten = '10'
+    More = 'more than 10'
 
     @classmethod
     def choices(cls):
@@ -20,13 +20,13 @@ class Rooms(Enum):
 
 
 class Development(Enum):
-    house = 'Detached house'
-    block = 'Block'
-    tenement = 'Tenement house'
-    rowhouse = 'Rowhouse'
-    semi = 'Semi-detached house'
-    loft = 'Loft'
-    apartment = 'Apartment house'
+    House = 'Detached house'
+    Block = 'Block'
+    Tenement = 'Tenement house'
+    Rowhouse = 'Rowhouse'
+    SemiHouse = 'Semi-detached house'
+    Loft = 'Loft'
+    Apartment = 'Apartment house'
 
     @classmethod
     def choices(cls):
@@ -34,17 +34,17 @@ class Development(Enum):
 
 
 class Floor(Enum):
-    zero = 'Ground floor'
-    first = '1 floor'
-    second = '2 floor'
-    third = '3 floor'
-    fourth = '4 floor'
-    fifth = '5 floor'
-    sixth = '6 floor'
-    seventh = '7 floor'
-    eighth = '8 floor'
-    ninth = '9 floor'
-    higher = '> 9 floor'
+    Zero = 'Ground floor'
+    First = '1 floor'
+    Second = '2 floor'
+    Third = '3 floor'
+    Fourth = '4 floor'
+    Fifth = '5 floor'
+    Sixth = '6 floor'
+    Seventh = '7 floor'
+    Eighth = '8 floor'
+    Ninth = '9 floor'
+    Higher = '> 9 floor'
 
     @classmethod
     def choices(cls):
@@ -52,11 +52,11 @@ class Floor(Enum):
 
 
 class Heat(Enum):
-    district = 'District heating'
-    gas = 'Gas heating'
-    electric = 'Electric heating'
-    boiler = 'Boiler'
-    other = 'Other'
+    District = 'District heating'
+    Gas = 'Gas heating'
+    Electric = 'Electric heating'
+    Boiler = 'Boiler'
+    Other = 'Other'
 
     @classmethod
     def choices(cls):

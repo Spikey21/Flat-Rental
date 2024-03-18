@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Create flat{% endblock %}
+
+{% block content %}
+{% block headjavascript %}{{ form.media.js }}{% endblock %}
+{% load widget_tweaks %}
+
+<div class="container p-3">
+        <h1 class="text-center">
+            <p class="text-uppercase font-weight-bold font-italic">CHANGE FLAT DETAILS</p>
+        </h1>
+        <h3 class="text-center">
+            <p class="text-uppercase font-weight-bold font-italic">{{ detail.flat.title }}</p>
+        </h3>
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-row m-2">
+                        <label for="inputArea" class="col-sm-6 col-form-label">Area</label>
+                        <input type="number" class="form-control" id="inputArea" name="area" value="{{detail.area}}">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputRooms" class="col-sm-6 col-form-label">Rooms: </label>
+                            <select id="inputRooms" class="form-control" name="rooms">
+                            <option value="{{detail.rooms}}">{{ detail.get_rooms_display }}</option>
+                            {% for value,text in form.rooms.field.choices  %}
+                                {% if detail.rooms not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputDev" class="col-sm-6 col-form-label">Development Type: </label>
+                            <select id="inputDev" class="form-control" name="development_type">
+                            <option value="{{detail.development_type}}">{{ detail.get_development_type_display }}</option>
+                            {% for value,text in form.development_type.field.choices  %}
+                                {% if detail.development_type not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputFloor" class="col-sm-6 col-form-label">Floor: </label>
+                            <select id="inputFloor" class="form-control" name="floor">
+                            <option value="{{detail.floor}}">{{ detail.get_floor_display }}</option>
+                            {% for value,text in form.floor.field.choices  %}
+                                {% if detail.floor not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-row m-2">
+                            <label for="inputHeating" class="col-sm-6 col-form-label">Heating: </label>
+                            <select id="inputHeating" class="form-control" name="heating">
+                            <option value="{{detail.heating}}">{{ detail.get_heating_display }}</option>
+                            {% for value,text in form.heating.field.choices  %}
+                                {% if detail.heating not in value %}
+                                    <option value="{{ value }}">{{ text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-row m-2">
+                        <label for="inputYear" class="col-sm-6 col-form-label">Year</label>
+                        <input type="number" class="form-control" id="inputYear" name="year" value="{{detail.year}}">
+                    </div>
+                </div>
+            </div>
+            {% csrf_token %}
+            <div class="form-group m-4">
+                <div class="col-sm-12 text-right">
+                    <button type="submit" class="btn btn-success">SAVE</button>
+                </div>
+            </div>
+        </form>
+</div>
+
+{% endblock %}

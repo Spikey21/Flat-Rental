@@ -1,13 +1,41 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from .models import Flat, FlatImage, Equip, FlatLocation
+from .models import Flat, FlatImage, FlatLocation, FlatDetail
 
 
 class FlatForm(forms.ModelForm):
     class Meta:
         model = Flat
         exclude = ('created_at', 'user', 'status')
+
+
+class UpdateFlatForm(forms.ModelForm):
+    class Meta:
+        model = Flat
+        fields = ('title', 'text', 'price', 'status', 'equipment')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateFlatForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class DetailForm(forms.ModelForm):
+    class Meta:
+        model = FlatDetail
+        exclude = ('flat',)
+
+    def __init__(self, *args, **kwargs):
+        super(DetailForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class DetailUpdateForm(forms.ModelForm):
+    class Meta:
+        model = FlatDetail
+        exclude = ('flat',)
 
 
 class LocationForm(forms.ModelForm):
@@ -17,6 +45,17 @@ class LocationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(LocationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class UpdateLocationForm(forms.ModelForm):
+    class Meta:
+        model = FlatLocation
+        fields = ('city', 'district', 'street')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateLocationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -32,8 +71,8 @@ class FlatImageForm(forms.ModelForm):
         model = FlatImage
         fields = ('image',)
         widgets = {
-            'image': MultipleFileInput(attrs={'class':'form-control',
-                                              'type' : 'file'})
+            'image': MultipleFileInput(attrs={'class': 'form-control',
+                                              'type': 'file'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -42,6 +81,19 @@ class FlatImageForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
+class ImageUpdateForm(forms.ModelForm):
+    image = forms.ImageField(label='image')
+
+    class Meta:
+        model = FlatImage
+        fields = ('image',)
+        widgets = {
+            'image': MultipleFileInput(attrs={'class': 'form-control',
+                                              'type': 'file'})
+        }
+
+
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=12)
 LocationInlineFormSet = inlineformset_factory(Flat, FlatLocation, form=LocationForm, extra=1)
+DetailInlineFormSet = inlineformset_factory(Flat, FlatDetail, form=DetailForm, extra=1)
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Flat, FlatImage, Equip, FlatLocation, LocationArea, LocationDistrict, Room
+from .models import Flat, FlatImage, Equip, FlatLocation, FlatDetail,  LocationArea, LocationDistrict
 
 
 class FlatAdmin(admin.ModelAdmin):
@@ -39,16 +39,16 @@ class EquipAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-class RoomAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    list_filter = ('name',)
-    search_fields = ('name',)
+class FlatDetailAdmin(admin.ModelAdmin):
+    list_display = ('id', 'area', 'year', 'flat')
+    list_filter = ('id', 'year', 'flat')
+    search_fields = ('year', 'flat',)
 
 
 admin.site.register(Flat, FlatAdmin)
 admin.site.register(FlatImage, FlatImageAdmin)
 admin.site.register(Equip, EquipAdmin)
-admin.site.register(Room, RoomAdmin)
+admin.site.register(FlatDetail, FlatDetailAdmin)
 admin.site.register(LocationDistrict, LocationDistrictAdmin)
 admin.site.register(LocationArea, LocationCityAdmin)
 admin.site.register(FlatLocation, FlatLocationAdmin)
