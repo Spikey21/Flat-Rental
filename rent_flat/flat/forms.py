@@ -1,13 +1,25 @@
+import re
+
 from django import forms
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, CharField, Textarea
 
 from .models import Flat, FlatImage, FlatLocation, FlatDetail
+from .utils import capitalized_validator
 
 
 class FlatForm(forms.ModelForm):
+    title = CharField(max_length=120, validators=[capitalized_validator])
+    text = CharField(widget=Textarea)
+
     class Meta:
         model = Flat
         exclude = ('created_at', 'user', 'status')
+
+    def clean_text(self):
+        # Force each sentence of the description to be capitalized.
+        initial = self.cleaned_data['description']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
+        return '. '.join(sentence.capitalize() for sentence in sentences)
 
 
 class UpdateFlatForm(forms.ModelForm):
