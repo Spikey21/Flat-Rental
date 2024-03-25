@@ -1,16 +1,38 @@
+import re
+
 from django import forms
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, CharField, Textarea, IntegerField, FloatField
 
 from .models import Flat, FlatImage, FlatLocation, FlatDetail
+from .utils import capitalized_validator, positive_validator, YearField
 
 
 class FlatForm(forms.ModelForm):
+    title = CharField(max_length=120, validators=[capitalized_validator])
+    text = CharField(widget=Textarea)
+    price = IntegerField(min_value=0, validators=[positive_validator])
+
     class Meta:
         model = Flat
         exclude = ('created_at', 'user', 'status')
 
+    def __init__(self, *args, **kwargs):
+        super(FlatForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    def clean_text(self):
+        # Force each sentence of the text to be capitalized.
+        initial = self.cleaned_data['text']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
+        return '. '.join(sentence.capitalize() for sentence in sentences)
+
 
 class UpdateFlatForm(forms.ModelForm):
+    title = CharField(max_length=120, validators=[capitalized_validator])
+    text = CharField(widget=Textarea)
+    price = IntegerField(min_value=0, validators=[positive_validator])
+
     class Meta:
         model = Flat
         fields = ('title', 'text', 'price', 'status', 'equipment')
@@ -22,6 +44,9 @@ class UpdateFlatForm(forms.ModelForm):
 
 
 class DetailForm(forms.ModelForm):
+    area = FloatField(min_value=0.0, validators=[positive_validator])
+    year = YearField(min_value=0, validators=[positive_validator])
+
     class Meta:
         model = FlatDetail
         exclude = ('flat',)
@@ -33,12 +58,22 @@ class DetailForm(forms.ModelForm):
 
 
 class DetailUpdateForm(forms.ModelForm):
+    area = FloatField(min_value=0.0, validators=[positive_validator])
+    year = YearField(min_value=0, validators=[positive_validator])
+
     class Meta:
         model = FlatDetail
         exclude = ('flat',)
 
+    def __init__(self, *args, **kwargs):
+        super(DetailUpdateForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class LocationForm(forms.ModelForm):
+    street = CharField(max_length=120, validators=[capitalized_validator])
+
     class Meta:
         model = FlatLocation
         fields = ('city', 'district', 'street')
@@ -50,6 +85,8 @@ class LocationForm(forms.ModelForm):
 
 
 class UpdateLocationForm(forms.ModelForm):
+    street = CharField(max_length=120, validators=[capitalized_validator])
+
     class Meta:
         model = FlatLocation
         fields = ('city', 'district', 'street')
@@ -91,6 +128,11 @@ class ImageUpdateForm(forms.ModelForm):
             'image': MultipleFileInput(attrs={'class': 'form-control',
                                               'type': 'file'})
         }
+
+    def __init__(self, *args, **kwargs):
+        super(ImageUpdateForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=12)
