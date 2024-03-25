@@ -76,7 +76,7 @@ class FlatListView(FilterView):
         return queryset
 
 
-class FlatDetailView(LoginRequiredMixin, DetailView):
+class FlatDetailView(DetailView):
     model = Flat
     template_name = 'detail.html'
 

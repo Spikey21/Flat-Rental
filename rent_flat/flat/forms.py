@@ -1,8 +1,9 @@
 import re
 
 from django import forms
-from django.forms import inlineformset_factory, CharField, Textarea, IntegerField, FloatField
+from django.forms import inlineformset_factory, CharField, Textarea, IntegerField, FloatField, ChoiceField
 
+from .const import Rooms, Development, Floor, Heat
 from .models import Flat, FlatImage, FlatLocation, FlatDetail
 from .utils import capitalized_validator, positive_validator, YearField
 
@@ -44,8 +45,12 @@ class UpdateFlatForm(forms.ModelForm):
 
 
 class DetailForm(forms.ModelForm):
-    area = FloatField(min_value=0.0, validators=[positive_validator])
-    year = YearField(min_value=0, validators=[positive_validator])
+    area = FloatField(label='Area', min_value=0.0, validators=[positive_validator])
+    rooms = ChoiceField(label='Rooms', choices=Rooms.choices())
+    development_type = ChoiceField(label='Development Type', choices=Development.choices())
+    floor = ChoiceField(label='Floor', choices=Floor.choices())
+    heating = ChoiceField(label='Heating', choices=Heat.choices())
+    year = YearField(label='Year', min_value=0, validators=[positive_validator])
 
     class Meta:
         model = FlatDetail
