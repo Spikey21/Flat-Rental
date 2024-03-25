@@ -28,6 +28,12 @@ class Flat(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        constraints = (
+            # for checking in the DB
+            CheckConstraint(
+                check=Q(price__gte=0.0),
+                name='flat_price_range'),
+        )
 
     def __str__(self):
         return f'{self.title} | {self.created_at}'
