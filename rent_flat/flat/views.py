@@ -26,6 +26,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     template_name = 'create.html'
     model = Flat
     form_class = FlatForm
+    login_url = 'login'
     success_url = reverse_lazy("home")
 
     def get_context_data(self, **kwargs):
@@ -83,6 +84,7 @@ class FlatDetailView(DetailView):
 
 class FlatUpdateView(LoginRequiredMixin, UpdateView):
     model = Flat
+    login_url = 'login'
     template_name = 'update.html'
     form_class = UpdateFlatForm
     success_url = reverse_lazy("home")
@@ -112,6 +114,7 @@ class FlatDetailUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'update_detail.html'
     form_class = DetailUpdateForm
     context_object_name = 'detail'
+    login_url = 'login'
     success_url = reverse_lazy("my_ads")
 
 
@@ -120,6 +123,7 @@ class FlatLocationUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'update_location.html'
     form_class = UpdateLocationForm
     context_object_name = 'location'
+    login_url = 'login'
     success_url = reverse_lazy("my_ads")
 
 
@@ -127,6 +131,7 @@ class FlatImageUpdateView(LoginRequiredMixin, UpdateView):
     model = Flat
     template_name = 'update_image.html'
     form_class = ImageUpdateForm
+    login_url = 'login'
     success_url = reverse_lazy("home")
 
 

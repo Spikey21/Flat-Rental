@@ -9,9 +9,9 @@ from .utils import capitalized_validator, positive_validator, YearField
 
 
 class FlatForm(forms.ModelForm):
-    title = CharField(max_length=120, validators=[capitalized_validator])
-    text = CharField(widget=Textarea)
-    price = IntegerField(min_value=0, validators=[positive_validator])
+    title = CharField(label='Title', max_length=120, validators=[capitalized_validator])
+    text = CharField(label='Text', widget=Textarea)
+    price = IntegerField(label='Price', min_value=0, validators=[positive_validator])
 
     class Meta:
         model = Flat
@@ -30,9 +30,9 @@ class FlatForm(forms.ModelForm):
 
 
 class UpdateFlatForm(forms.ModelForm):
-    title = CharField(max_length=120, validators=[capitalized_validator])
-    text = CharField(widget=Textarea)
-    price = IntegerField(min_value=0, validators=[positive_validator])
+    title = CharField(label='Title', max_length=120, validators=[capitalized_validator])
+    text = CharField(label='Text', widget=Textarea)
+    price = IntegerField(label='Price', min_value=0, validators=[positive_validator])
 
     class Meta:
         model = Flat
@@ -63,8 +63,12 @@ class DetailForm(forms.ModelForm):
 
 
 class DetailUpdateForm(forms.ModelForm):
-    area = FloatField(min_value=0.0, validators=[positive_validator])
-    year = YearField(min_value=0, validators=[positive_validator])
+    area = FloatField(label='Area', min_value=0.0, validators=[positive_validator])
+    rooms = ChoiceField(label='Rooms', choices=Rooms.choices())
+    development_type = ChoiceField(label='Development Type', choices=Development.choices())
+    floor = ChoiceField(label='Floor', choices=Floor.choices())
+    heating = ChoiceField(label='Heating', choices=Heat.choices())
+    year = YearField(label='Year', min_value=0, validators=[positive_validator])
 
     class Meta:
         model = FlatDetail
@@ -77,7 +81,7 @@ class DetailUpdateForm(forms.ModelForm):
 
 
 class LocationForm(forms.ModelForm):
-    street = CharField(max_length=120, validators=[capitalized_validator])
+    street = CharField(label='Street', max_length=120, validators=[capitalized_validator])
 
     class Meta:
         model = FlatLocation
