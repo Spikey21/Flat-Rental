@@ -73,7 +73,7 @@ class Equipment(Enum):
     oven = 'Oven'
     balcony = 'Balcony'
     terrace = 'Terrace'
-    elevator = 'elevator'
+    elevator = 'Elevator'
     ac = 'Air conditioning'
 
     @classmethod
