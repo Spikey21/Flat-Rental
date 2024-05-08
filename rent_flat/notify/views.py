@@ -10,6 +10,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
     template_name = 'notifications.html'
     context_object_name = 'notifications'
     ordering = ['-created_at']
+    paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
@@ -21,6 +22,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
 class NotificationDetailView(LoginRequiredMixin, DetailView):
     model = Notification
     template_name = 'notification_detail.html'
+    context_object_name = 'notification_detail'
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
