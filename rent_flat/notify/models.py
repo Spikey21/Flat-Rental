@@ -3,11 +3,13 @@ from django.conf import settings
 
 from notifications.base.models import AbstractNotification
 
+from .const import NotifyType
+
 User = settings.AUTH_USER_MODEL
 
 
 class NotificationType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(choices=NotifyType.choices(),max_length=100)
 
     def __str__(self):
         return self.name
