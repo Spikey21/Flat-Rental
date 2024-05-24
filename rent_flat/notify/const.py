@@ -5,6 +5,7 @@ class NotifyType(Enum):
     Add = 'Created'
     Del = 'Deleted'
     Mod = 'Modified'
+    Mess = 'Message'
 
     @classmethod
     def choices(cls):

@@ -40,8 +40,10 @@
         </ul>
         <ul class="nav nav-pills navbar-right">
             {% if user.is_authenticated %}
+
+            {% notifications_unread as unread_count %}
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                     Notifications {% live_notify_badge %}
                     <span class="glyphicon glyphicon-user pull-right">
 
