@@ -15,7 +15,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
         queryset = super().get_queryset(**kwargs)
-        queryset = queryset.filter(recipient=user)
+        queryset = queryset.filter(recipient=user).unread()
         return queryset
 
 
@@ -26,5 +26,5 @@ class NotificationDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
-        Notification.objects.filter(pk=self.kwargs['pk']).update(read=True, unread=False)
+        Notification.objects.filter(pk=self.kwargs['pk']).update(unread=False)
         return queryset.filter(id=self.kwargs['pk'])
