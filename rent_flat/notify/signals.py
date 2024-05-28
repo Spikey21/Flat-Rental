@@ -14,6 +14,12 @@ def create_flat(sender, created, instance, update_fields, **kwargs):
         notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name="Created").first(), verb=_("You have new flat"), message=_("You have new flat"))
 
 
+@receiver(post_save, sender=Flat)
+def update_flat(sender, created, instance, update_fields, **kwargs):
+    if update_fields:
+        notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name=("Modified" or "Deleted")).first(), verb=_("Status has changed"), message=_("Status of flat has changed"))
+
+
 @receiver(post_save, sender=Notification)
 def send_email(sender, created, instance, update_fields, **kwargs):
     send_mail(
