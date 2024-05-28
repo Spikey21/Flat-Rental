@@ -15,14 +15,14 @@ class NotificationListView(LoginRequiredMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
         queryset = super().get_queryset(**kwargs)
-        queryset = queryset.filter(recipient=user).unread()
+        queryset = queryset.filter(recipient=user)
         return queryset
 
 
 class NotificationDetailView(LoginRequiredMixin, DetailView):
     model = Notification
     template_name = 'notification_detail.html'
-    context_object_name = 'notification_detail'
+    context_object_name = 'notification'
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
