@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+	{{ notification.actor.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="p-3 my-3 mb-2 bg-white text-dark rounded border border-dark">
+        <div class="row m-4">
+            <h1 class="text-uppercase font-weight-bold">{{notification.verb}}</h1>
+        </div>
+        <div class="row m-4">
+            <div class="col-sm-6">
+                <p class="font-italic">{{notification.message|safe  }}</p>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col-sm-6">
+                <p class="text-start"> {{notification.created_at}}</p>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col-md-10 mx-auto">
+                <p class="text-start"> {{notification.actor.title}} | {{notification.actor.location}} - <a class="text-uppercase font-weight-bold font-italic"> {{notification.actor.price}} PLN</a></p>
+            </div>
+        </div>
+        <div class="row m-2">
+            <div class="col-md-12 d-flex justify-content-end">
+                <a class="btn btn-info btn-lg" href="{% url 'detail' notification.actor.id %}" role="button">Check it out!</a>
+            </div>
+        </div>
+        <div class="row">
+            <hr class="my-2">
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
