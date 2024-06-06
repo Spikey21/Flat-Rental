@@ -16,11 +16,9 @@ def create_flat(sender, created, instance, update_fields, **kwargs):
 
 @receiver(pre_save, sender=Flat)
 def on_change(sender, instance, **kwargs):
-    if instance.id is None: # new object will be created
-        pass # write your code here
-    else:
+    if instance.id is not None:
         previous = Flat.objects.get(id=instance.id)
-        if previous.title != instance.title: # field will be updated
+        if previous.status != instance.status: # field will be updated
             notify.send(instance, recipient=instance.user,
                         notification_type=NotificationType.objects.filter(name=("Del" or "Mod")).first(),
                         verb=_("Status od flat has changed"), message=_("Status has changed of your prefereneces"))
