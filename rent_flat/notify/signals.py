@@ -55,12 +55,6 @@ def notify_update_flat(sender, instance, **kwargs):
                         verb=_("Status od flat has changed"), message=_(f"Fields updated: {changed_fields}"))
 
 
-@receiver(post_save, sender=Flat)
-def update_flat(sender, created, instance, update_fields, **kwargs):
-    if update_fields:
-        notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name=("Del" or "Mod")).first(), verb=_("Status od flat has changed"), message=_("Status has changed of your prefereneces"))
-
-
 @receiver(post_save, sender=Notification)
 def send_email(sender, created, instance, update_fields, **kwargs):
     send_mail(
