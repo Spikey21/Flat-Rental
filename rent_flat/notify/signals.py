@@ -21,7 +21,35 @@ def on_change(sender, instance, **kwargs):
         if previous.status != instance.status: # field will be updated
             notify.send(instance, recipient=instance.user,
                         notification_type=NotificationType.objects.filter(name=("Del" or "Mod")).first(),
-                        verb=_("Status od flat has changed"), message=_("Status has changed of your prefereneces"))
+                        verb=_("Status od flat has changed"), message=_("Status of flat in your prefereneces has changed"))
+
+
+@receiver(pre_save, sender=Flat)
+def notify_update_flat(sender, instance, **kwargs):
+    if instance.pk:  # Only check if the instance already exists (i.e., is being updated)
+        try:
+            old_instance = Flat.objects.get(pk=instance.pk)
+        except Flat.DoesNotExist:
+            return
+
+        changed_fields = {}
+
+        for field in instance._meta.fields:
+            field_name = field.name
+            old_value = getattr(old_instance, field_name)
+            new_value = getattr(instance, field_name)
+            if old_value != new_value:
+                changed_fields[field_name] = {
+                    'old': old_value,
+                    'new': new_value
+                }
+
+        if changed_fields:
+            # Send a notification
+            notify.send(instance, recipient=instance.user,
+                        notification_type=NotificationType.objects.filter(name="Mod").first(),
+                        verb=_("Status od flat has changed"), message=_(f"Fields updated: {changed_fields}"))
+
 
 @receiver(post_save, sender=Flat)
 def update_flat(sender, created, instance, update_fields, **kwargs):
