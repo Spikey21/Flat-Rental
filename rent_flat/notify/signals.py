@@ -15,13 +15,17 @@ def create_flat(sender, created, instance, update_fields, **kwargs):
 
 
 @receiver(pre_save, sender=Flat)
-def on_change(sender, instance, **kwargs):
-    if instance.id is not None:
-        previous = Flat.objects.get(id=instance.id)
-        if previous.status != instance.status: # field will be updated
+def notify_delete_flat(sender, instance, **kwargs):
+    if instance.pk:  # Only check if the instance already exists (i.e., is being updated)
+        try:
+            old_instance = Flat.objects.get(pk=instance.pk)
+        except Flat.DoesNotExist:
+            return
+
+        if old_instance.status != instance.status: # field will be updated
             notify.send(instance, recipient=instance.user,
-                        notification_type=NotificationType.objects.filter(name=("Del" or "Mod")).first(),
-                        verb=_("Status od flat has changed"), message=_("Status of flat in your prefereneces has changed"))
+                        notification_type=NotificationType.objects.filter(name="Del").first(),
+                        verb=_("Status od flat has changed "), message=_("Flat in your preferences is no longer available"))
 
 
 @receiver(pre_save, sender=Flat)
