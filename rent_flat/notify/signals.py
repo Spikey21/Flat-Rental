@@ -21,8 +21,8 @@ def notify_delete_flat(sender, instance, **kwargs):
             old_instance = Flat.objects.get(pk=instance.pk)
         except Flat.DoesNotExist:
             return
-
-        if old_instance.status != instance.status: # field will be updated
+        if old_instance.status != instance.status:  # Check if field updated
+            # Send a notification
             notify.send(instance, recipient=instance.user,
                         notification_type=NotificationType.objects.filter(name="Del").first(),
                         verb=_("Status od flat has changed "), message=_("Flat in your preferences is no longer available"))
@@ -35,9 +35,7 @@ def notify_update_flat(sender, instance, **kwargs):
             old_instance = Flat.objects.get(pk=instance.pk)
         except Flat.DoesNotExist:
             return
-
         changed_fields = {}
-
         for field in instance._meta.fields:
             field_name = field.name
             old_value = getattr(old_instance, field_name)
@@ -52,7 +50,7 @@ def notify_update_flat(sender, instance, **kwargs):
             # Send a notification
             notify.send(instance, recipient=instance.user,
                         notification_type=NotificationType.objects.filter(name="Mod").first(),
-                        verb=_("Status od flat has changed"), message=_(f"Fields updated: {changed_fields}"))
+                        verb=_("Flat has been updated"), message=_(f"Fields updated: {changed_fields}"))
 
 
 @receiver(post_save, sender=Notification)
