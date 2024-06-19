@@ -11,6 +11,7 @@ from .models import Notification, NotificationType
 @receiver(post_save, sender=Flat)
 def create_flat(sender, created, instance, update_fields, **kwargs):
     if created:
+        # Send a notification
         notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New flat showed up!"), message=_("You have new flat in your preferences"))
 
 
@@ -50,7 +51,8 @@ def notify_update_flat(sender, instance, **kwargs):
             # Send a notification
             notify.send(instance, recipient=instance.user,
                         notification_type=NotificationType.objects.filter(name="Mod").first(),
-                        verb=_("Flat has been updated"), message=_(f"Fields updated: {changed_fields}"))
+                        verb=_("Flat has been updated"), message=_("Fields updated: \n" +
+                                                                   '\n'.join("{}: {}".format(k, v) for k, v in changed_fields.items())))
 
 
 @receiver(post_save, sender=Notification)
