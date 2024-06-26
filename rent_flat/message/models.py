@@ -14,3 +14,8 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=500)
 
+    def __str__(self):
+        return f'{self.user} to {self.chat}: {self.text[:20]}'
+
+
+
