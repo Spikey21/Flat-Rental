@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Chat(models.Model):
-    admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=True, null=True)
     participants = models.ManyToManyField(User, related_name='chats')
     created = models.DateTimeField(auto_now_add=True)
 
