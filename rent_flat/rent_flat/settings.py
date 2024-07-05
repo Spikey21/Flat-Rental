@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'notifications',
     'notify',
     'channels',
+    'message',
 ]
 
 MIDDLEWARE = [
