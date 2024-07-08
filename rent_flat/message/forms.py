@@ -1,10 +1,10 @@
 from django import forms
-from .models import Message
+from .models import Message, Chat
 
 
 class ChatForm(forms.ModelForm):
     class Meta:
-        model = Message
+        model = Chat
         fields = ['name','participants']
 
 
