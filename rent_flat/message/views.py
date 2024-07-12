@@ -36,7 +36,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     template_name = 'chat/message_form.html'
 
     def form_valid(self, form):
-        form.instance.sender = self.request.user
+        form.instance.user = self.request.user
         form.instance.chat_id = self.kwargs['chat_id']
         return super().form_valid(form)
 

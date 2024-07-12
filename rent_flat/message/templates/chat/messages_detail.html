@@ -5,7 +5,7 @@
         <h3>Messages</h3>
         <ul>
         {% for message in object.messages.all %}
-            <li><strong>{{ message.sender }}</strong>: {{ message.content }}</li>
+            <li><strong>{{ message.user }}</strong>: {{ message.text }}</li>
         {% endfor %}
         </ul>
     </div>
