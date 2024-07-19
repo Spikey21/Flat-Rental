@@ -7,10 +7,17 @@
         <div class="card-body">
                         <ul>
                         {% for chat in object_list %}
-                            <li><a href="{% url 'chat_detail' chat.pk %}">{{ chat.name }}</a> {{ chat.participants.all }}</li>
+                            <li><a href="{% url 'chat_detail' chat.pk %}">{{ chat.name }} - </a>
+                                {% for participant in chat.participants.all %}
+                                <span class="text-uppercase font-weight-bold" >{{ participant.username }} </span>
+                                {% endfor %}
+
+                            </li>
                         {% endfor %}
                         </ul>
                         <a href="{% url 'create_chat' %}">Create a new chat</a>
+            </div>
+    </div>
     {% else %}
         <div class="col my-4">
             <div class="col-sm-12 align-self-center">
@@ -22,4 +29,5 @@
             </div>
         </div>
     {% endif %}
+</div>
 {% endblock %}
