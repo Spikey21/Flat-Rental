@@ -3,6 +3,7 @@ from django.db import models
 
 User = settings.AUTH_USER_MODEL
 
+
 class Chat(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     participants = models.ManyToManyField(User, related_name='chats')

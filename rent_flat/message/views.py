@@ -7,7 +7,7 @@ from .forms import ChatForm, MessageForm
 
 class ChatListView(LoginRequiredMixin, ListView):
     model = Chat
-    template_name = 'chat/chat_list.html'
+    template_name = 'chat/messages_list.html'
 
     def get_queryset(self):
         return self.request.user.chats.all()
@@ -16,13 +16,13 @@ class ChatListView(LoginRequiredMixin, ListView):
 class ChatCreateView(LoginRequiredMixin, CreateView):
     model = Chat
     form_class = ChatForm
-    template_name = 'chat/chat_form.html'
+    template_name = 'chat/messages_form.html'
     success_url = reverse_lazy('chat_list')
 
 
 class ChatDetailView(LoginRequiredMixin, DetailView):
     model = Chat
-    template_name = 'chat/chat_detail.html'
+    template_name = 'chat/messages_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,7 +36,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     template_name = 'chat/message_form.html'
 
     def form_valid(self, form):
-        form.instance.sender = self.request.user
+        form.instance.user = self.request.user
         form.instance.chat_id = self.kwargs['chat_id']
         return super().form_valid(form)
 

@@ -56,7 +56,13 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  href="{% url 'chat_list' %}">Messages</a>
+                <a class="nav-link"  href="{% url 'chat_list' %}">Chats
+                    {% if user.chats.count %}
+                    <span class="badge badge-light">
+                        {{user.chats.count}}
+                    </span>
+                    {% endif %}
+                </a>
             </li>
 
             <li class="nav-item">

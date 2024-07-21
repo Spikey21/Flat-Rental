@@ -6,8 +6,8 @@ from .models import Chat, Message
 
 
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ('name', 'participants',)
-    list_filter = ("created", 'name')
+    list_display = ('name', 'created',)
+    list_filter = ('created', 'name')
     search_fields = ['name', 'participants',]
 
 
