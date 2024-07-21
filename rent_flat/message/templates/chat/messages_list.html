@@ -5,18 +5,17 @@
     {% if object_list %}
     <div class="card mb-3 my-4">
         <div class="card-body">
-                        <ul>
-                        {% for chat in object_list %}
-                            <li><a href="{% url 'chat_detail' chat.pk %}">{{ chat.name }} - </a>
-                                {% for participant in chat.participants.all %}
-                                <span class="text-uppercase font-weight-bold" >{{ participant.username }} </span>
-                                {% endfor %}
-
-                            </li>
+            <ul>
+                {% for chat in object_list %}
+                    <li><a href="{% url 'chat_detail' chat.pk %}">{{ chat.name }} - </a>
+                        {% for participant in chat.participants.all %}
+                        <span class="text-uppercase font-weight-bold" >{{ participant.username }} </span>
                         {% endfor %}
-                        </ul>
-                        <a href="{% url 'create_chat' %}">Create a new chat</a>
-            </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'create_chat' %}">Create a new chat</a>
+        </div>
     </div>
     {% else %}
         <div class="col my-4">
