@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, m2m_changed
 from notifications.signals import notify
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
@@ -19,8 +19,10 @@ def create_flat(sender, created, instance, update_fields, **kwargs):
 @receiver(post_save, sender=Chat)
 def create_chat(sender, created, instance, update_fields, **kwargs):
     if created:
-        # Send a notification
-        notify.send(instance, recipient=instance.participants, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New Chat showed up!"), message=_("Some is trying to reach you!"))
+        users = instance.participants.all()
+        for user in users:
+            # Send a notification
+            notify.send(instance, recipient=user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New Chat showed up!"), message=_("Some is trying to reach you!"))
 
 
 @receiver(post_save, sender=Message)
@@ -28,6 +30,19 @@ def send_message(sender, created, instance, update_fields, **kwargs):
     if created:
         # Send a notification
         notify.send(instance, recipient=instance.chat.participants, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_(f"New message from {instance.user}!"), message=_("You have new messages in your chat"))
+
+
+@receiver(m2m_changed, sender=Chat.participants.through)
+def chat_users_changed(sender, instance, action, **kwargs):
+    if action == "post_add":
+        users = instance.participants.all()
+        for user in users:
+            Notification.objects.create(
+                recipient=user,
+                notification_type=NotificationType.objects.filter(name="Add").first(),
+                verb=_(f"New message from {instance.user}!"),
+                message=f"A new Chat '{instance.name}' was added.",
+            )
 
 
 @receiver(pre_save, sender=Flat)
