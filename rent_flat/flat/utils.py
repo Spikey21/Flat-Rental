@@ -21,6 +21,6 @@ class YearField(IntegerField):
         if value >= date.today().year:
             raise ValidationError('Future years not allowed here.')
 
-    def clean(self, value):
-        result = super().clean(value)
-        return date(year=result.year, month=result.month, day=1).year
+    # def clean(self, value):
+    #     result = super().clean(value)
+    #     return date(year=result.year, month=result.month, day=1).year

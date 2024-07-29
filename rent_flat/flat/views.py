@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django_filters.views import FilterView
@@ -10,7 +10,7 @@ from django_filters.views import FilterView
 from .filter import FlatFilter
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm, DetailInlineFormSet, \
     ImageUpdateForm, DetailUpdateForm, UpdateLocationForm
-from .models import Flat, Equip, FlatDetail, FlatLocation
+from .models import Flat, Equip, FlatDetail, FlatLocation, FlatImage
 
 User = get_user_model()
 
@@ -30,15 +30,15 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("home")
 
     def get_context_data(self, **kwargs):
-        context = super(FlatCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context['detail_items'] = DetailInlineFormSet(self.request.POST, prefix='detail_item_set')
-            context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
-            context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
+            context['detail_items'] = DetailInlineFormSet(self.request.POST)
+            context['location_items'] = LocationInlineFormSet(self.request.POST)
+            context['image_items'] = ImageInlineFormSet(self.request.POST)
         else:
-            context['detail_items'] = DetailInlineFormSet(prefix='detail_item_set')
-            context['location_items'] = LocationInlineFormSet(prefix='location_item_set')
-            context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
+            context['detail_items'] = DetailInlineFormSet()
+            context['location_items'] = LocationInlineFormSet()
+            context['image_items'] = ImageInlineFormSet()
         return context
 
     def form_valid(self, form):
@@ -47,16 +47,22 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
         formset_location = context['location_items']
         formset_image = context['image_items']
         form.instance.user = self.request.user
-        self.object = form.save()
-        if self.object.id != None:
-            if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
-                formset_detail.instance = self.object
-                formset_detail.save()
-                formset_location.instance = self.object
-                formset_location.save()
-                formset_image.instance = self.object
-                formset_image.save()
-        return super(FlatCreateView, self).form_valid(form)
+        if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
+            self.object = form.save()
+            print(self.object)
+            details = formset_detail.save(commit=False)
+            details.flat = self.object
+            details.save()
+            location = formset_location.save(commit=False)
+            location.flat = self.object
+            location.save()
+            images = formset_image.save(commit=False)
+            for image in images:
+                image.flat = self.object
+                image.save()
+            return redirect(self.success_url)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class FlatListView(FilterView):
