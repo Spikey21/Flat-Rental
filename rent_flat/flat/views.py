@@ -49,13 +49,14 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
             self.object = form.save()
-            print(self.object)
             details = formset_detail.save(commit=False)
-            details.flat = self.object
-            details.save()
-            location = formset_location.save(commit=False)
-            location.flat = self.object
-            location.save()
+            for detail in details:
+                detail.flat = self.object
+                detail.save()
+            locations = formset_location.save(commit=False)
+            for location in locations:
+                location.flat = self.object
+                location.save()
             images = formset_image.save(commit=False)
             for image in images:
                 image.flat = self.object

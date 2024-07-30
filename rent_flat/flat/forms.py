@@ -81,8 +81,6 @@ class DetailUpdateForm(forms.ModelForm):
 
 
 class LocationForm(forms.ModelForm):
-    street = CharField(label='Street', max_length=120, validators=[capitalized_validator])
-
     class Meta:
         model = FlatLocation
         fields = ('city', 'district', 'street')
