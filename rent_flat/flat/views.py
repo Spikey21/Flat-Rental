@@ -30,7 +30,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("home")
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(FlatCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
             context['detail_items'] = DetailInlineFormSet(self.request.POST, prefix='detail_item_set')
             context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
