@@ -4,7 +4,9 @@ from notifications.signals import notify
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
-from ..flat.models import Flat
+from flat.models import Flat
+
+from .const import NotifyType
 from .models import Notification, NotificationType
 from ..message.models import Chat, Message
 
@@ -13,7 +15,7 @@ from ..message.models import Chat, Message
 def create_flat(sender, created, instance, update_fields, **kwargs):
     if created:
         # Send a notification
-        notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New flat showed up!"), message=_("You have new flat in your preferences"))
+        notify.send(instance, recipient=instance.user, notification_type=NotificationType.objects.filter(name='Add').first(), verb=_("New flat showed up!"), message=_("You have new flat in your preferences"))
 
 
 @receiver(post_save, sender=Chat)

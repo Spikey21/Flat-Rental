@@ -47,23 +47,20 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
         formset_location = context['location_items']
         formset_image = context['image_items']
         form.instance.user = self.request.user
+        form.instance.status = 'Active'
         if form.is_valid() and formset_detail.is_valid() and formset_location.is_valid() and formset_image.is_valid():
             self.object = form.save()
-            details = formset_detail.save(commit=False)
-            for detail in details:
-                detail.flat = self.object
-                detail.save()
-            locations = formset_location.save(commit=False)
-            for location in locations:
-                location.flat = self.object
-                location.save()
+            formset_detail.instance = self.object
+            formset_detail.save()
+            formset_location.instance = self.object
+            formset_location.save()
             images = formset_image.save(commit=False)
             for image in images:
                 image.flat = self.object
                 image.save()
             return super(FlatCreateView, self).form_valid(form)
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.form_invalid(form)
 
 
 class FlatListView(FilterView):
