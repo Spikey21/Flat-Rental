@@ -32,13 +32,13 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context['detail_items'] = DetailInlineFormSet(self.request.POST)
-            context['location_items'] = LocationInlineFormSet(self.request.POST)
-            context['image_items'] = ImageInlineFormSet(self.request.POST)
+            context['detail_items'] = DetailInlineFormSet(self.request.POST, prefix='detail_item_set')
+            context['location_items'] = LocationInlineFormSet(self.request.POST, prefix='location_item_set')
+            context['image_items'] = ImageInlineFormSet(self.request.POST, prefix='image_item_set')
         else:
-            context['detail_items'] = DetailInlineFormSet()
-            context['location_items'] = LocationInlineFormSet()
-            context['image_items'] = ImageInlineFormSet()
+            context['detail_items'] = DetailInlineFormSet(prefix='detail_item_set')
+            context['location_items'] = LocationInlineFormSet(prefix='location_item_set')
+            context['image_items'] = ImageInlineFormSet(prefix='image_item_set')
         return context
 
     def form_valid(self, form):
@@ -61,7 +61,7 @@ class FlatCreateView(LoginRequiredMixin, CreateView):
             for image in images:
                 image.flat = self.object
                 image.save()
-            return redirect(self.success_url)
+            return super(FlatCreateView, self).form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
