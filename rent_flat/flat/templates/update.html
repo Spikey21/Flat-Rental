@@ -119,6 +119,8 @@
             <div class="form-group m-4">
                 <label for="inputImage" class="col-form-label">IMAGE</label>
                 <hr class="my-4">
+                {{ image_items.management_form }}
+                {{ image_items.non_form_errors }}
                 <div class="col-sm-6" id="InputImage">
                     {% if flat.images %}
                     <div class="form-group row items-group">

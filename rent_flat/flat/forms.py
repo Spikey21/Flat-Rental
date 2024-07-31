@@ -36,7 +36,7 @@ class UpdateFlatForm(forms.ModelForm):
 
     class Meta:
         model = Flat
-        fields = ('title', 'text', 'price', 'status', 'equipment')
+        exclude = ('created_at', 'user',)
 
     def __init__(self, *args, **kwargs):
         super(UpdateFlatForm, self).__init__(*args, **kwargs)
@@ -143,4 +143,6 @@ class ImageUpdateForm(forms.ModelForm):
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=12)
 LocationInlineFormSet = inlineformset_factory(Flat, FlatLocation, form=LocationForm, extra=1)
 DetailInlineFormSet = inlineformset_factory(Flat, FlatDetail, form=DetailForm, extra=1)
+UpdateImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=ImageUpdateForm, extra=12)
+
 
