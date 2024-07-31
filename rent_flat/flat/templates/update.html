@@ -20,7 +20,7 @@
                 <div class="col-sm-3">
                     <div class="form-group row m-4">
                         <div class="col-sm-12 text-right">
-                            <a href="{% url 'update_location' flat.id %}" class="btn btn-dark">Change location</a>
+                            <a href="{% url 'update_location' flat.location.id %}" class="btn btn-dark">Change location</a>
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="form-group row m-2">
                     <div class="col-sm-12 text-right">
-                        <a href="{% url 'update_detail' flat.id %}" class="btn btn-dark">Change details</a>
+                        <a href="{% url 'update_detail' flat.detail.id %}" class="btn btn-dark">Change details</a>
                     </div>
                 </div>
             </div>
