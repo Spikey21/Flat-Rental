@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 from .models import Notification, NotificationType
-from flat.models import Flat
+from flat.models import Flat, FlatDetail, FlatLocation
 from message.models import Chat, Message
 
 
@@ -80,6 +80,58 @@ def notify_update_flat(sender, instance, **kwargs):
         if changed_fields:
             # Send a notification
             notify.send(instance, recipient=instance.user,
+                        notification_type=NotificationType.objects.filter(name="Mod").first(),
+                        verb=_("Flat has been updated"), message=_("Fields updated: \n" +
+                                                                   '\n'.join("{}: {}".format(k, v) for k, v in changed_fields.items())))
+
+
+@receiver(pre_save, sender=FlatDetail)
+def notify_update_flat(sender, instance, **kwargs):
+    if instance.pk:  # Only check if the instance already exists (i.e., is being updated)
+        try:
+            old_instance = FlatDetail.objects.get(pk=instance.pk)
+        except Flat.DoesNotExist:
+            return
+        changed_fields = {}
+        for field in instance._meta.fields:
+            field_name = field.name
+            old_value = getattr(old_instance, field_name)
+            new_value = getattr(instance, field_name)
+            if old_value != new_value:
+                changed_fields[field_name] = {
+                    'old': old_value,
+                    'new': new_value
+                }
+
+        if changed_fields:
+            # Send a notification
+            notify.send(instance, recipient=instance.flat.user,
+                        notification_type=NotificationType.objects.filter(name="Mod").first(),
+                        verb=_("Flat has been updated"), message=_("Fields updated: \n" +
+                                                                   '\n'.join("{}: {}".format(k, v) for k, v in changed_fields.items())))
+
+
+@receiver(pre_save, sender=FlatLocation)
+def notify_update_flat(sender, instance, **kwargs):
+    if instance.pk:  # Only check if the instance already exists (i.e., is being updated)
+        try:
+            old_instance = FlatLocation.objects.get(pk=instance.pk)
+        except Flat.DoesNotExist:
+            return
+        changed_fields = {}
+        for field in instance._meta.fields:
+            field_name = field.name
+            old_value = getattr(old_instance, field_name)
+            new_value = getattr(instance, field_name)
+            if old_value != new_value:
+                changed_fields[field_name] = {
+                    'old': old_value,
+                    'new': new_value
+                }
+
+        if changed_fields:
+            # Send a notification
+            notify.send(instance, recipient=instance.flat.user,
                         notification_type=NotificationType.objects.filter(name="Mod").first(),
                         verb=_("Flat has been updated"), message=_("Fields updated: \n" +
                                                                    '\n'.join("{}: {}".format(k, v) for k, v in changed_fields.items())))
