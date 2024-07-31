@@ -14,7 +14,6 @@
                     </li>
                 {% endfor %}
             </ul>
-            <a href="{% url 'create_chat' %}">Create a new chat</a>
         </div>
     </div>
     {% else %}
@@ -28,5 +27,6 @@
             </div>
         </div>
     {% endif %}
+    <a href="{% url 'create_chat' %}">Create a new chat</a>
 </div>
 {% endblock %}
