@@ -108,13 +108,11 @@ class FlatUpdateView(LoginRequiredMixin, UpdateView):
         self.object = form.save()
         if self.object.id != None:
             if form.is_valid() and formset_image.is_valid():
-                images = formset_image.save(commit=False)
-                for image in images:
-                    image.flat = self.object
-                    image.save()
+                formset_image.instance = self.object
+                formset_image.save()
                 return super(FlatUpdateView, self).form_valid(form)
             else:
-                return self.render_to_response(self.get_context_data(form=form))
+                return self.form_invalid(form)
 
 
 class FlatDetailUpdateView(LoginRequiredMixin, UpdateView):

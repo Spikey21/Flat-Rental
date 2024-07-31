@@ -4,11 +4,9 @@ from notifications.signals import notify
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
-from flat.models import Flat
-
-from .const import NotifyType
 from .models import Notification, NotificationType
-from ..message.models import Chat, Message
+from flat.models import Flat
+from message.models import Chat, Message
 
 
 @receiver(post_save, sender=Flat)
