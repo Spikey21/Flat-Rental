@@ -21,8 +21,7 @@ def chat_users_changed(sender, instance, action, **kwargs):
     if action == "post_add":
         users = instance.participants.all()
         for user in users:
-            if user != instance.user:
-                notify.send(instance, recipient=user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New Chat showed up!"), message=_("Some is trying to reach you!"))
+            notify.send(instance, recipient=user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_("New Chat showed up!"), message=_("Some is trying to reach you!"))
 
 
 @receiver(post_save, sender=Message)
