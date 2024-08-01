@@ -36,7 +36,7 @@ class UpdateFlatForm(forms.ModelForm):
 
     class Meta:
         model = Flat
-        fields = ('title', 'text', 'price', 'status', 'equipment')
+        exclude = ('created_at', 'user',)
 
     def __init__(self, *args, **kwargs):
         super(UpdateFlatForm, self).__init__(*args, **kwargs)
@@ -81,8 +81,6 @@ class DetailUpdateForm(forms.ModelForm):
 
 
 class LocationForm(forms.ModelForm):
-    street = CharField(label='Street', max_length=120, validators=[capitalized_validator])
-
     class Meta:
         model = FlatLocation
         fields = ('city', 'district', 'street')
@@ -94,8 +92,6 @@ class LocationForm(forms.ModelForm):
 
 
 class UpdateLocationForm(forms.ModelForm):
-    street = CharField(max_length=120, validators=[capitalized_validator])
-
     class Meta:
         model = FlatLocation
         fields = ('city', 'district', 'street')
@@ -147,4 +143,6 @@ class ImageUpdateForm(forms.ModelForm):
 ImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=FlatImageForm, extra=12)
 LocationInlineFormSet = inlineformset_factory(Flat, FlatLocation, form=LocationForm, extra=1)
 DetailInlineFormSet = inlineformset_factory(Flat, FlatDetail, form=DetailForm, extra=1)
+UpdateImageInlineFormSet = inlineformset_factory(Flat, FlatImage, form=ImageUpdateForm, extra=12)
+
 
