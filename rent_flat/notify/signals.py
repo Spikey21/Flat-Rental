@@ -25,12 +25,12 @@ def chat_users_changed(sender, instance, action, **kwargs):
 
 
 @receiver(post_save, sender=Message)
-def send_message(sender, created, instance, update_fields, **kwargs):
+def send_message(sender, created, instance,update_fields, **kwargs):
     if created:
-        # Send a notification
-        notify.send(instance, recipient=instance.chat.participants, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_(f"New message from {instance.user}!"), message=_("You have new messages in your chat"))
-
-
+        users = instance.chat.participants.all()
+        for user in users:
+            # Send a notification
+            notify.send(instance, recipient=user, notification_type=NotificationType.objects.filter(name="Add").first(), verb=_(f"New message from {instance.user}!"), message=_("You have new messages in your chat"))
 
 
 @receiver(pre_save, sender=Flat)
