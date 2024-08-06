@@ -8,7 +8,7 @@ class Chat(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     participants = models.ManyToManyField(User, related_name='chats')
     created = models.DateTimeField(auto_now_add=True)
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin')
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='adminY')
 
 
 class Message(models.Model):
