@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import modelformset_factory
+
 from .models import Message, Chat
 
 
@@ -19,3 +21,6 @@ class MessageForm(forms.ModelForm):
         super(MessageForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+MessageFormSet = modelformset_factory(Message, form=MessageForm, extra=1)
