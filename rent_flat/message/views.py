@@ -36,14 +36,19 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
             chat = form.save(commit=False)
             chat.admin = self.request.user
             chat.save()
-            chat.participants.add(self.request.user)  # Add the creator to the participants
-            form.save_m2m()  # Save M2M relationships for participants
+            # Save the M2M relationships from the form
+            form.save_m2m()
+            # Add the creator to the participants
+            chat.participants.add(self.request.user)
+            # Debugging output after adding the creator
+            print(f"After adding creator, participants are: {chat.participants.all()}")
+            chat.save()
 
             # Save messages
             messages = message_formset.save(commit=False)
             for message in messages:
                 message.chat = chat
-                message.sender = self.request.user  # Set the sender as the creator
+                message.user = self.request.user  # Set the sender as the creator
                 message.save()
 
             return super(ChatCreateView, self).form_valid(form)
