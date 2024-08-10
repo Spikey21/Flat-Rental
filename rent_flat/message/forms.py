@@ -6,16 +6,11 @@ from .models import Message, Chat
 
 User = get_user_model()
 
+
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
         fields = ['name','participants']
-
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(ChatForm, self).__init__(*args, **kwargs)
-        if user:
-            self.fields['participants'].queryset = User.objects.exclude(id=user.id)
 
 
 class MessageForm(forms.ModelForm):

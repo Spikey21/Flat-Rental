@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,6 +21,11 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
     template_name = 'chat/messages_form.html'
     success_url = reverse_lazy('chat_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Pass the current user to the form
+        return kwargs
+
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
@@ -27,6 +34,7 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
             data['message_formset'] = MessageFormSet(queryset=Message.objects.none())
         return data
 
+    @transaction.atomic
     def form_valid(self, form):
         context = self.get_context_data()
         message_formset = context['message_formset']
@@ -40,10 +48,6 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
             form.save_m2m()
             # Add the creator to the participants
             chat.participants.add(self.request.user)
-            # Debugging output after adding the creator
-            print(f"After adding creator, participants are: {chat.participants.all()}")
-            chat.save()
-
             # Save messages
             messages = message_formset.save(commit=False)
             for message in messages:
@@ -51,10 +55,11 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
                 message.user = self.request.user  # Set the sender as the creator
                 message.save()
 
-            return super(ChatCreateView, self).form_valid(form)
+            # transaction.set_autocommit(True)
+            return redirect(self.success_url)
+
         else:
             return self.form_invalid(form)
-
 
 
 class ChatDetailView(LoginRequiredMixin, DetailView):
