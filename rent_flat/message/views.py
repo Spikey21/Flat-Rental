@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Chat, Message
-from .forms import ChatForm, MessageForm
+from .forms import ChatForm, MessageForm, MessageFormSet
 
 
 class ChatListView(LoginRequiredMixin, ListView):
@@ -18,6 +18,44 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
     form_class = ChatForm
     template_name = 'chat/messages_form.html'
     success_url = reverse_lazy('chat_list')
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['message_formset'] = MessageFormSet(self.request.POST)
+        else:
+            data['message_formset'] = MessageFormSet(queryset=Message.objects.none())
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        message_formset = context['message_formset']
+        attachment_form = context['attachment_form']
+
+        if message_formset.is_valid() and attachment_form.is_valid():
+            # Create the Chat instance
+            chat = form.save(commit=False)
+            chat.creator = self.request.user
+            chat.save()
+            chat.participants.add(self.request.user)  # Add the creator to the participants
+            form.save_m2m()  # Save M2M relationships for participants
+
+            # Save messages
+            messages = message_formset.save(commit=False)
+            for message in messages:
+                message.chat = chat
+                message.sender = self.request.user  # Set the sender as the creator
+                message.save()
+
+            # Save attachment
+            attachment = attachment_form.save(commit=False)
+            attachment.chat = chat
+            attachment.save()
+
+            return super(ChatCreateView, self).form_valid(form)
+        else:
+            return self.form_invalid(form)
+
 
 
 class ChatDetailView(LoginRequiredMixin, DetailView):
