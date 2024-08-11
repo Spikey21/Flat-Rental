@@ -13,7 +13,11 @@ class ChatForm(forms.ModelForm):
         fields = ['name','participants']
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Extract the 'user' argument
         super(ChatForm, self).__init__(*args, **kwargs)
+        if user:
+            # Exclude the current user from the participants queryset
+            self.fields['participants'].queryset = User.objects.exclude(id=user.id)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
