@@ -7,6 +7,9 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
+                    <div id="participants_field">
+                        {{ form.participants }}
+                    </div>
                 <h3>Message</h3>
                     {{ message_formset.management_form }}
                     {% for form in message_formset %}
@@ -18,4 +21,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#id_participants').select2({
+            ajax: {
+                url: "{% url 'user_suggestions' %}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.results
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1,
+        });
+    });
+</script>
+
 {% endblock %}

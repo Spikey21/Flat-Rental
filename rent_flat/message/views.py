@@ -1,10 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Chat, Message
 from .forms import ChatForm, MessageForm, MessageFormSet
+
+User = get_user_model()
 
 
 class ChatListView(LoginRequiredMixin, ListView):
@@ -60,6 +65,14 @@ class ChatCreateView(LoginRequiredMixin, CreateView):
 
         else:
             return self.form_invalid(form)
+
+
+class UserSuggestionsView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q', '')
+        users = User.objects.filter(username__icontains=query).exclude(id=request.user.id)
+        results = [{'id': user.id, 'text': user.username} for user in users]
+        return JsonResponse({'results': results})
 
 
 class ChatDetailView(LoginRequiredMixin, DetailView):
