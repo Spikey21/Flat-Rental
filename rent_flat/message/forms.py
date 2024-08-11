@@ -12,6 +12,11 @@ class ChatForm(forms.ModelForm):
         model = Chat
         fields = ['name','participants']
 
+    def __init__(self, *args, **kwargs):
+        super(ChatForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class MessageForm(forms.ModelForm):
     class Meta:
