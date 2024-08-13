@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <div class="container">
     <div class="card mb-3 my-4">
@@ -6,16 +7,32 @@
             <h2>Create a Chat</h2>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                    <div id="participants_field">
-                        {{ form.participants }}
-                    </div>
+                <!-- Render all fields except participants -->
+                {% for field in form %}
+                    {% if field.name != 'participants' %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field|add_class:"form-control" }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <!-- Render the participants field separately -->
+                <div class="form-group">
+                    <select class="participants-select" name="participants" multiple="multiple">
+                            {% for value,text in form.participants.field.choices  %}
+                            <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                    </select>
+                </div>
                 <h3>Message</h3>
                     {{ message_formset.management_form }}
                     {% for form in message_formset %}
                         {{ form.as_p }}
                     {% endfor %}
-                <button type="submit">Send Message</button>
+                <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
             <a href="{% url 'chat_list' %}">Back to chats</a>
         </div>

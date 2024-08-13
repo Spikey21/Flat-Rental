@@ -11,6 +11,9 @@ class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
         fields = ['name','participants']
+        widgets = {
+            'participants': forms.SelectMultiple(attrs={'class': ['participants-select', 'form-control']}),
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)  # Extract the 'user' argument
