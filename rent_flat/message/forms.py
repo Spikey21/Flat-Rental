@@ -12,7 +12,7 @@ class ChatForm(forms.ModelForm):
         model = Chat
         fields = ['name','participants']
         widgets = {
-            'participants': forms.SelectMultiple(attrs={'class': ['participants-select', 'form-control']}),
+            'participants': forms.SelectMultiple(attrs={'class': ['participants-select']}),
         }
 
     def __init__(self, *args, **kwargs):

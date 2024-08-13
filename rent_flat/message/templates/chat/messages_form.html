@@ -21,7 +21,7 @@
                 {% endfor %}
                 <!-- Render the participants field separately -->
                 <div class="form-group">
-                    <select class="participants-select" name="participants" multiple="multiple">
+                    <select class="participants-select form-control" name="participants" multiple="multiple">
                             {% for value,text in form.participants.field.choices  %}
                             <option value="{{ value }}">{{ text }}</option>
                             {% endfor %}
