@@ -27,7 +27,7 @@
    `make dev`
 4. After that populate database with command below:
 
-   `docker-compose run app sh -c "python manage.py populate_db"`
+   `docker-compose run app sh -c "python manage.py runserver"`
  
 5. If you want to create superuser:
 
