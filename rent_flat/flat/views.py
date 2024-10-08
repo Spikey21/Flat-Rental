@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django_filters.views import FilterView
 
@@ -11,6 +11,8 @@ from .filter import FlatFilter
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm, DetailInlineFormSet, \
     ImageUpdateForm, DetailUpdateForm, UpdateLocationForm, UpdateImageInlineFormSet
 from .models import Flat, Equip, FlatDetail, FlatLocation, FlatImage
+from message.forms import MessageForm
+from message.models import Message, Chat
 
 User = get_user_model()
 
@@ -84,6 +86,25 @@ class FlatListView(FilterView):
 class FlatDetailView(DetailView):
     model = Flat
     template_name = 'detail.html'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+            chat = Chat.objects.create(
+                name=self.object.title,
+                participants=[self.request.user, self.object.user],
+                admin=self.request.user
+            )
+            Message.objects.create(
+                user=request.user,
+                participants=chat,
+                text=form.cleaned_data['text']
+            )
+            return redirect(reverse('detail', kwargs={'pk': self.object.pk}))
+
+        return self.get(request, *args, **kwargs)
 
 
 class FlatUpdateView(LoginRequiredMixin, UpdateView):
