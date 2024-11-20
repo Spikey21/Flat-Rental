@@ -87,24 +87,33 @@ class FlatDetailView(DetailView):
     model = Flat
     template_name = 'detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message_form'] = MessageForm()
+        return context
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = MessageForm(request.POST)
+        message_form = MessageForm(request.POST)
 
-        if form.is_valid():
-            chat = Chat.objects.create(
+        if message_form.is_valid():
+            chat, created = Chat.objects.get_or_create(
                 name=self.object.title,
-                participants=[self.request.user, self.object.user],
-                admin=self.request.user
+                participants=self.request.user,
+                admin = self.request.user
             )
-            Message.objects.create(
-                user=request.user,
-                participants=chat,
-                text=form.cleaned_data['text']
-            )
+            chat.participants.add(self.object.user)
+            # Create and save the message
+            message = message_form.save(commit=False)
+            message.sender = self.request.user
+            message.chat = chat
+            message.save()
+
             return redirect(reverse('detail', kwargs={'pk': self.object.pk}))
 
-        return self.get(request, *args, **kwargs)
+        # If form is invalid, render the page with errors
+        context = self.get_context_data(message_form=message_form)
+        return self.render_to_response(context)
 
 
 class FlatUpdateView(LoginRequiredMixin, UpdateView):
