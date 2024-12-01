@@ -97,15 +97,18 @@ class FlatDetailView(DetailView):
         message_form = MessageForm(request.POST)
 
         if message_form.is_valid():
+            # Check if a chat already exists or create one
             chat, created = Chat.objects.get_or_create(
                 name=self.object.title,
-                participants=self.request.user,
-                admin = self.request.user
+                admin=self.request.user
             )
-            chat.participants.add(self.object.user)
+            if created:
+                chat.participants.set([self.request.user, self.object.user])
+            else:
+                chat.participants.add(self.request.user, self.object.user)
             # Create and save the message
             message = message_form.save(commit=False)
-            message.sender = self.request.user
+            message.user = self.request.user
             message.chat = chat
             message.save()
 
