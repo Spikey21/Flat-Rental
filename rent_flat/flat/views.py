@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django_filters.views import FilterView
 
@@ -11,6 +11,8 @@ from .filter import FlatFilter
 from .forms import FlatForm, ImageInlineFormSet, LocationInlineFormSet, UpdateFlatForm, DetailInlineFormSet, \
     ImageUpdateForm, DetailUpdateForm, UpdateLocationForm, UpdateImageInlineFormSet
 from .models import Flat, Equip, FlatDetail, FlatLocation, FlatImage
+from message.forms import MessageForm
+from message.models import Message, Chat
 
 User = get_user_model()
 
@@ -84,6 +86,37 @@ class FlatListView(FilterView):
 class FlatDetailView(DetailView):
     model = Flat
     template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message_form'] = MessageForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        message_form = MessageForm(request.POST)
+
+        if message_form.is_valid():
+            # Check if a chat already exists or create one
+            chat, created = Chat.objects.get_or_create(
+                name=self.object.title,
+                admin=self.request.user
+            )
+            if created:
+                chat.participants.set([self.request.user, self.object.user])
+            else:
+                chat.participants.add(self.request.user, self.object.user)
+            # Create and save the message
+            message = message_form.save(commit=False)
+            message.user = self.request.user
+            message.chat = chat
+            message.save()
+
+            return redirect(reverse('detail', kwargs={'pk': self.object.pk}))
+
+        # If form is invalid, render the page with errors
+        context = self.get_context_data(message_form=message_form)
+        return self.render_to_response(context)
 
 
 class FlatUpdateView(LoginRequiredMixin, UpdateView):
