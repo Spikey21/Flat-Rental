@@ -22,11 +22,11 @@
    *  [docker-compose](https://github.com/Yelp/docker-compose/blob/master/docs/install.md)
 3. If you have docker applications installed type this commands to build docker container:
 
-   `docker-compose build`
+   `docker compose build`
 
 4. After that populate database with command below:
 
-   `docker-compose run app sh -c "python manage.py runserver"`
+   `docker compose run app sh -c "python manage.py runserver"`
  
 5. If you want to create superuser:
 
